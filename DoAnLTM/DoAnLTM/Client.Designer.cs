@@ -102,6 +102,7 @@
             Controls.Add(txt_ServerIP);
             Name = "Client";
             Text = "Client";
+            FormClosing += Client_FormClosing;
             MouseMove += Client_MouseMove;
             ResumeLayout(false);
             PerformLayout();

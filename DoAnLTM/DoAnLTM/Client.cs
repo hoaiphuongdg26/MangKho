@@ -60,26 +60,6 @@ namespace DoAnLTM
             bnt_Disconnect.Enabled = false;
         }
 
-        private void bnt_Disconnect_MouseMove(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                if (isConnected)
-                {
-                    // Gửi tọa độ chuột tới server
-                    byte[] buffer = BitConverter.GetBytes(e.X);
-                    stream.Write(buffer, 0, buffer.Length);
-                    buffer = BitConverter.GetBytes(e.Y);
-                    stream.Write(buffer, 0, buffer.Length);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi khi gửi tọa độ chuột tới server: " + ex.Message);
-            }
-
-        }
-
         private void Client_MouseMove(object sender, MouseEventArgs e)
         {
             try
@@ -97,7 +77,11 @@ namespace DoAnLTM
             {
                 MessageBox.Show("Lỗi khi gửi tọa độ chuột tới server: " + ex.Message);
             }
+        }
 
+        private void Client_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            bnt_Disconnect_Click(sender, e);
         }
     }
 }
