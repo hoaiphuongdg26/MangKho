@@ -28,32 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
+            bnt_Client = new Button();
+            bnt_Server = new Button();
             SuspendLayout();
             // 
-            // label1
+            // bnt_Client
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(53, 56);
-            label1.Name = "label1";
-            label1.Size = new Size(50, 20);
-            label1.TabIndex = 0;
-            label1.Text = "label1";
+            bnt_Client.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            bnt_Client.Location = new Point(239, 48);
+            bnt_Client.Name = "bnt_Client";
+            bnt_Client.Size = new Size(135, 46);
+            bnt_Client.TabIndex = 3;
+            bnt_Client.Text = "Client";
+            bnt_Client.UseVisualStyleBackColor = true;
+            bnt_Client.Click += bnt_Client_Click;
+            // 
+            // bnt_Server
+            // 
+            bnt_Server.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            bnt_Server.Location = new Point(48, 48);
+            bnt_Server.Name = "bnt_Server";
+            bnt_Server.Size = new Size(135, 46);
+            bnt_Server.TabIndex = 2;
+            bnt_Server.Text = "Server";
+            bnt_Server.UseVisualStyleBackColor = true;
+            bnt_Server.Click += bnt_Server_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(label1);
+            ClientSize = new Size(436, 136);
+            Controls.Add(bnt_Client);
+            Controls.Add(bnt_Server);
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
+        private Button bnt_Client;
+        private Button bnt_Server;
     }
 }
