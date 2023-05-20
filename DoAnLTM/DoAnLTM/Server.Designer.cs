@@ -50,6 +50,7 @@
             Name = "Server";
             Text = "Server";
             Load += Server_Load;
+            MouseMove += Server_MouseMove;
             ResumeLayout(false);
             PerformLayout();
         }
