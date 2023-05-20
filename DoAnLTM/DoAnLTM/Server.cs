@@ -95,6 +95,7 @@ namespace DoAnLTM
             MessageBox.Show("Client disconnected.");
         }
 
+
         private void Server_Load(object sender, EventArgs e)
         {
 
