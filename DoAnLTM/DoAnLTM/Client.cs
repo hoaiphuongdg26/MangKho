@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 
 namespace DoAnLTM
 {
@@ -18,7 +19,10 @@ namespace DoAnLTM
         private NetworkStream stream;
         private bool isConnected = false;
 
-        public event EventHandler<Point> MouseMoved;
+        private const int WM_MOUSEMOVE = 0x0200;
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
         public Client()
         {
@@ -66,6 +70,7 @@ namespace DoAnLTM
 
         private void Client_MouseMove(object sender, MouseEventArgs e)
         {
+            ptb_mouseCursor.Location = e.Location;
             try
             {
                 if (isConnected)
@@ -78,7 +83,6 @@ namespace DoAnLTM
 
                 }
             }
-
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi gửi tọa độ chuột tới server: " + ex.Message);

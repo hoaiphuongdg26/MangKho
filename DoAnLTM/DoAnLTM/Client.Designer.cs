@@ -34,6 +34,8 @@
             bnt_Connect = new Button();
             bnt_Disconnect = new Button();
             txt_ServerIP = new TextBox();
+            ptb_mouseCursor = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)ptb_mouseCursor).BeginInit();
             SuspendLayout();
             // 
             // txt_Port
@@ -89,11 +91,21 @@
             txt_ServerIP.Size = new Size(318, 27);
             txt_ServerIP.TabIndex = 6;
             // 
+            // ptb_mouseCursor
+            // 
+            ptb_mouseCursor.BackColor = SystemColors.MenuHighlight;
+            ptb_mouseCursor.Location = new Point(385, 210);
+            ptb_mouseCursor.Name = "ptb_mouseCursor";
+            ptb_mouseCursor.Size = new Size(30, 30);
+            ptb_mouseCursor.TabIndex = 12;
+            ptb_mouseCursor.TabStop = false;
+            // 
             // Client
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(ptb_mouseCursor);
             Controls.Add(txt_Port);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -104,6 +116,7 @@
             Text = "Client";
             FormClosing += Client_FormClosing;
             MouseMove += Client_MouseMove;
+            ((System.ComponentModel.ISupportInitialize)ptb_mouseCursor).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -116,5 +129,6 @@
         private Button bnt_Connect;
         private Button bnt_Disconnect;
         private TextBox txt_ServerIP;
+        private PictureBox ptb_mouseCursor;
     }
 }

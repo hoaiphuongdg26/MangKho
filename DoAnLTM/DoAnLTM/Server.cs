@@ -15,19 +15,19 @@ namespace DoAnLTM
 {
     public partial class Server : Form
     {
+        //private bool isMouseCursorVisible = false;
+        private Point virtualMousePosition = Point.Empty;
         private const int MOUSEEVENTF_MOVE = 0x0001;
-        [DllImport("user32.dll")]
-        private static extern bool SetCursorPos(int X, int Y);
-
         private TcpListener listener;
         private TcpClient client;
         private NetworkStream stream;
         private byte[] buffer;
+        [DllImport("user32.dll")]
+        private static extern bool NativeSetCursorPos(int X, int Y);
 
         public Server()
         {
             InitializeComponent();
-
             //Tạo IP Address và Port cho Server
             IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             int ServerPort = 3000;
@@ -39,14 +39,11 @@ namespace DoAnLTM
             //Bắt đầu chấp nhận kết nối từ Client
             listener.BeginAcceptTcpClient(AcceptCallBack, null);
         }
-
-        public void UpdateMousePosition(Point location)
+        private void SetCursorPos(int x, int y)
         {
-            // Cập nhật tọa độ chuột trên server
-            Cursor.Position = PointToScreen(location);
+            Invoke((Action)(() => virtualMousePosition = new Point(x, y)));
+            Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));
         }
-
-
         private void DisplayMessage(string message)
         {
             if (txt_ServerLog.InvokeRequired)
@@ -60,14 +57,21 @@ namespace DoAnLTM
         }
         private void AcceptCallBack(IAsyncResult ar)
         {
-            DisplayMessage("Server started, listening for connections...\nConnection accepted from 127.0.0.1:8080\n");
+            DisplayMessage("Server started, listening for connections...\nConnection accepted from 127.0.0.1:3000\n");
             client = listener.EndAcceptTcpClient(ar);
             stream = client.GetStream();
-            //Tạo kích thước cho buffer là 8 byte, 4 byte cho toạ độ X, 4 byte cho toạ độ Y
+            // Tạo kích thước cho buffer là 8 byte, 4 byte cho toạ độ X, 4 byte cho toạ độ Y
             buffer = new byte[8];
 
-            //Bắt đầu đọc toạ độ chuột từ client
+            // Bắt đầu đọc toạ độ chuột
             stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
+
+            // Cập nhật vị trí ban đầu của con chuột
+            Invoke((Action)(() =>
+            {
+                ptb_mouseCursor.Location = Cursor.Position;
+                ptb_mouseCursor.Visible = true;
+            }));
         }
         private void ReadCallback(IAsyncResult ar)
         {
@@ -81,11 +85,10 @@ namespace DoAnLTM
                 int mouseX = BitConverter.ToInt32(buffer, 0);
                 int mouseY = BitConverter.ToInt32(buffer, 4);
 
-                // Di chuyển con trỏ chuột trên máy chủ
-                SetCursorPos(mouseX, mouseY);
+                // Di chuyển chuột trên máy chủ
+                Invoke((Action)(() => SetCursorPos(mouseX, mouseY)));
 
                 // Tiếp tục đọc tọa độ chuột từ client
-                buffer = new byte[8];
                 stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
             }
             catch (IOException)
@@ -103,16 +106,20 @@ namespace DoAnLTM
             // Hiển thị thông báo client đã ngắt kết nối
             MessageBox.Show("Client disconnected.");
         }
-
-
         private void Server_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void Server_MouseMove(object sender, MouseEventArgs e)
+        private void Server_MouseEnter(object sender, EventArgs e)
         {
-           
+            ptb_mouseCursor.Visible = true;
+            Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));
+        }
+
+        private void Server_MouseLeave(object sender, EventArgs e)
+        {
+            ptb_mouseCursor.Visible = false;
         }
     }
 }

@@ -1,10 +1,10 @@
 namespace DoAnLTM
 {
-    public partial class Form1 : Form
+    public partial class Dashboard : Form
     {
         private Server server;
         private Client client;
-        public Form1()
+        public Dashboard()
         {
             InitializeComponent();
         }
@@ -19,10 +19,6 @@ namespace DoAnLTM
         {
             client = new Client();
             client.Show();
-        }
-        private void Client_MouseMoved(object sender, Point location)
-        {
-            server.UpdateMousePosition(location);
         }
     }
 }

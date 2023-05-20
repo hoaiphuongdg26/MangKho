@@ -1,6 +1,6 @@
 ﻿namespace DoAnLTM
 {
-    partial class Form1
+    partial class Dashboard
     {
         /// <summary>
         ///  Required designer variable.
@@ -54,15 +54,15 @@
             bnt_Server.UseVisualStyleBackColor = true;
             bnt_Server.Click += bnt_Server_Click;
             // 
-            // Form1
+            // Dashboard
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(436, 136);
             Controls.Add(bnt_Client);
             Controls.Add(bnt_Server);
-            Name = "Form1";
-            Text = "Form1";
+            Name = "Dashboard";
+            Text = "Dashboard";
             ResumeLayout(false);
         }
 
