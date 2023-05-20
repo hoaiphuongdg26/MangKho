@@ -37,6 +37,7 @@
             txt_ServerLog.BorderStyle = BorderStyle.None;
             txt_ServerLog.Location = new Point(12, 12);
             txt_ServerLog.Name = "txt_ServerLog";
+            txt_ServerLog.ReadOnly = true;
             txt_ServerLog.Size = new Size(776, 20);
             txt_ServerLog.TabIndex = 1;
             // 
