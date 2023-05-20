@@ -39,6 +39,14 @@ namespace DoAnLTM
             //Bắt đầu chấp nhận kết nối từ Client
             listener.BeginAcceptTcpClient(AcceptCallBack, null);
         }
+
+        public void UpdateMousePosition(Point location)
+        {
+            // Cập nhật tọa độ chuột trên server
+            Cursor.Position = PointToScreen(location);
+        }
+
+
         private void DisplayMessage(string message)
         {
             if (txt_ServerLog.InvokeRequired)
@@ -73,10 +81,11 @@ namespace DoAnLTM
                 int mouseX = BitConverter.ToInt32(buffer, 0);
                 int mouseY = BitConverter.ToInt32(buffer, 4);
 
-                // Di chuyển chuột trên máy chủ
+                // Di chuyển con trỏ chuột trên máy chủ
                 SetCursorPos(mouseX, mouseY);
 
                 // Tiếp tục đọc tọa độ chuột từ client
+                buffer = new byte[8];
                 stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
             }
             catch (IOException)
@@ -99,6 +108,11 @@ namespace DoAnLTM
         private void Server_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void Server_MouseMove(object sender, MouseEventArgs e)
+        {
+           
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 
 namespace DoAnLTM
 {
@@ -16,6 +17,9 @@ namespace DoAnLTM
         private TcpClient client;
         private NetworkStream stream;
         private bool isConnected = false;
+
+        public event EventHandler<Point> MouseMoved;
+
         public Client()
         {
             InitializeComponent();
@@ -71,8 +75,10 @@ namespace DoAnLTM
                     stream.Write(buffer, 0, buffer.Length);
                     buffer = BitConverter.GetBytes(e.Y);
                     stream.Write(buffer, 0, buffer.Length);
+
                 }
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi khi gửi tọa độ chuột tới server: " + ex.Message);
