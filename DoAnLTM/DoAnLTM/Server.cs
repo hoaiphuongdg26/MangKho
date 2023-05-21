@@ -36,6 +36,9 @@ namespace DoAnLTM
         public Server()
         {
             InitializeComponent();
+
+            ptb_mouseCursor.Visible = false;
+
             //Tạo IP Address và Port cho Server
             IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             int ServerPort = 3000;
@@ -78,6 +81,10 @@ namespace DoAnLTM
                 //test mới thêm
                 // Bắt đầu chấp nhận kết nối từ Client
                 listener.BeginAcceptTcpClient(AcceptCallBack, null);
+                Invoke((Action)(() =>
+                {
+                    ptb_mouseCursor.Visible = true;
+                }));
 
                 // Cập nhật trạng thái kết nối
                 isConnected = true;
@@ -111,8 +118,6 @@ namespace DoAnLTM
                     return;
 
                 // Đọc tọa độ chuột từ client
-                /*int mouseX = BitConverter.ToInt32(buffer, 0);
-                int mouseY = BitConverter.ToInt32(buffer, 4);*/
 
                 int mouseX = BitConverter.ToInt32(buffer, 4);
                 int mouseY = BitConverter.ToInt32(buffer, 0);
@@ -124,6 +129,10 @@ namespace DoAnLTM
             }
             catch (IOException)
             {
+                Invoke((Action)(() =>
+                {
+                    ptb_mouseCursor.Visible = false;
+                }));
                 DisconnectClient();
             }
         }
@@ -141,7 +150,7 @@ namespace DoAnLTM
 
         private void Server_MouseEnter(object sender, EventArgs e)
         {
-            ptb_mouseCursor.Visible = true;
+            //ptb_mouseCursor.Visible = true;
             Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));
         }
 
