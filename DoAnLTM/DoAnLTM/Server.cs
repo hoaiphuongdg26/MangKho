@@ -22,11 +22,8 @@ namespace DoAnLTM
         private TcpClient client;
         private NetworkStream stream;
         private byte[] buffer;
-        //test
+
         private bool isListening = true;
-
-
-        //mới thêm 
         private bool isConnected = false;
 
 
@@ -52,15 +49,10 @@ namespace DoAnLTM
         }
         private void SetCursorPos(int x, int y)
         {
-            /* Invoke((Action)(() => virtualMousePosition = new Point(x, y)));
-             Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));*/
             Invoke((Action)(() =>
             {
                 virtualMousePosition = new Point(x, y);
                 ptb_mouseCursor.Location = virtualMousePosition;
-
-                // Cập nhật toạ độ chuột trên Label
-                //lbl_MousePosition.Text = $"X: {x}, Y: {y}";
             }));
         }
         private void DisplayMessage(string message)
@@ -78,7 +70,6 @@ namespace DoAnLTM
         {
             if (isListening)
             {
-                //test mới thêm
                 // Bắt đầu chấp nhận kết nối từ Client
                 listener.BeginAcceptTcpClient(AcceptCallBack, null);
                 Invoke((Action)(() =>
@@ -89,9 +80,7 @@ namespace DoAnLTM
                 // Cập nhật trạng thái kết nối
                 isConnected = true;
 
-                //MessageBox.Show("Connection accepted from 127.0.0.1:3000\n", "Connect", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DisplayMessage("Connection accepted from 127.0.0.1:3000\n");
-                //DisplayMessage("Conneted...");
 
                 client = listener.EndAcceptTcpClient(ar);
                 stream = client.GetStream();
@@ -129,10 +118,6 @@ namespace DoAnLTM
             }
             catch (IOException)
             {
-                Invoke((Action)(() =>
-                {
-                    ptb_mouseCursor.Visible = false;
-                }));
                 DisconnectClient();
             }
         }
@@ -141,7 +126,6 @@ namespace DoAnLTM
             // Đóng kết nối và dừng lắng nghe
             stream.Close();
             client.Close();
-            //listener.Stop();
         }
         private void Server_Load(object sender, EventArgs e)
         {
@@ -152,11 +136,6 @@ namespace DoAnLTM
         {
             //ptb_mouseCursor.Visible = true;
             Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));
-        }
-
-        private void Server_MouseLeave(object sender, EventArgs e)
-        {
-            //ptb_mouseCursor.Visible = false;
         }
         private void Server_FormClosing(object sender, FormClosingEventArgs e)
         {

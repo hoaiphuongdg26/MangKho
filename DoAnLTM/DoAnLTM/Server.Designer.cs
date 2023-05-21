@@ -66,7 +66,6 @@
             FormClosing += Server_FormClosing;
             Load += Server_Load;
             MouseEnter += Server_MouseEnter;
-            MouseLeave += Server_MouseLeave;
             ((System.ComponentModel.ISupportInitialize)ptb_mouseCursor).EndInit();
             ResumeLayout(false);
             PerformLayout();
