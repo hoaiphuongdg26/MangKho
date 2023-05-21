@@ -27,6 +27,7 @@ namespace DoAnLTM
         public Client()
         {
             InitializeComponent();
+            ptb_mouseCursor.Visible = false;
         }
 
         private void bnt_Connect_Click(object sender, EventArgs e)
@@ -39,8 +40,18 @@ namespace DoAnLTM
                 client = new TcpClient(serverIP, serverPort);
                 stream = client.GetStream();
 
+
+                //test mới thêm
+                // Chỉ thêm sự kiện di chuyển chuột nếu isConnected là false
+                if (!isConnected)
+                    MouseMove += Client_MouseMove;
+
+
                 // Lắng nghe sự kiện di chuyển chuột
-                MouseMove += Client_MouseMove;
+                //MouseMove += Client_MouseMove;
+
+                // Hiển thị PictureBox
+                ptb_mouseCursor.Visible = true;
 
                 // Cập nhật trạng thái kết nối
                 isConnected = true;
@@ -60,7 +71,13 @@ namespace DoAnLTM
                 stream.Close();
             if (client != null)
                 client.Close();
-            MouseMove -= Client_MouseMove;
+            //MouseMove -= Client_MouseMove;
+
+            //test mới thêm
+            // Xóa sự kiện di chuyển chuột chỉ khi trạng thái kết nối là true
+            if (isConnected)
+                MouseMove -= Client_MouseMove;
+
 
             // Cập nhật trạng thái kết nối
             isConnected = false;
@@ -77,11 +94,13 @@ namespace DoAnLTM
                 {
                     // Gửi tọa độ chuột tới server
                     byte[] buffer = BitConverter.GetBytes(e.X);
-                    stream.Write(buffer, 0, buffer.Length);
+                    stream.Write(buffer, 4, buffer.Length);
                     buffer = BitConverter.GetBytes(e.Y);
                     stream.Write(buffer, 0, buffer.Length);
 
                 }
+                // Cập nhật toạ độ chuột trên Label
+                lbl_MousePosition.Text = $"X: {e.X}, Y: {e.Y}";
             }
             catch (Exception ex)
             {

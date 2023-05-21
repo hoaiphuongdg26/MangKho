@@ -22,6 +22,11 @@ namespace DoAnLTM
         private TcpClient client;
         private NetworkStream stream;
         private byte[] buffer;
+
+        //mới thêm 
+        private bool isConnected = false;
+
+
         [DllImport("user32.dll")]
         private static extern bool NativeSetCursorPos(int X, int Y);
 
@@ -41,8 +46,16 @@ namespace DoAnLTM
         }
         private void SetCursorPos(int x, int y)
         {
-            Invoke((Action)(() => virtualMousePosition = new Point(x, y)));
-            Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));
+            /* Invoke((Action)(() => virtualMousePosition = new Point(x, y)));
+             Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));*/
+            Invoke((Action)(() =>
+            {
+                virtualMousePosition = new Point(x, y);
+                ptb_mouseCursor.Location = virtualMousePosition;
+
+                // Cập nhật toạ độ chuột trên Label
+                lbl_MousePosition.Text = $"X: {x}, Y: {y}";
+            }));
         }
         private void DisplayMessage(string message)
         {
@@ -57,6 +70,16 @@ namespace DoAnLTM
         }
         private void AcceptCallBack(IAsyncResult ar)
         {
+            //test mới thêm
+            // Bắt đầu chấp nhận kết nối từ Client
+            listener.BeginAcceptTcpClient(AcceptCallBack, null);
+
+            // Cập nhật trạng thái kết nối
+            isConnected = true;
+
+
+
+
             DisplayMessage("Server started, listening for connections...\nConnection accepted from 127.0.0.1:3000\n");
             client = listener.EndAcceptTcpClient(ar);
             stream = client.GetStream();
@@ -82,9 +105,11 @@ namespace DoAnLTM
                     return;
 
                 // Đọc tọa độ chuột từ client
-                int mouseX = BitConverter.ToInt32(buffer, 0);
-                int mouseY = BitConverter.ToInt32(buffer, 4);
+                /*int mouseX = BitConverter.ToInt32(buffer, 0);
+                int mouseY = BitConverter.ToInt32(buffer, 4);*/
 
+                int mouseX = BitConverter.ToInt32(buffer, 4);
+                int mouseY = BitConverter.ToInt32(buffer, 0);
                 // Di chuyển chuột trên máy chủ
                 Invoke((Action)(() => SetCursorPos(mouseX, mouseY)));
 
@@ -101,14 +126,14 @@ namespace DoAnLTM
             // Đóng kết nối và dừng lắng nghe
             stream.Close();
             client.Close();
-            listener.Stop();
+            //listener.Stop();
 
             // Hiển thị thông báo client đã ngắt kết nối
             MessageBox.Show("Client disconnected.");
         }
         private void Server_Load(object sender, EventArgs e)
         {
-
+            ptb_mouseCursor.Visible = false;
         }
 
         private void Server_MouseEnter(object sender, EventArgs e)
@@ -119,7 +144,8 @@ namespace DoAnLTM
 
         private void Server_MouseLeave(object sender, EventArgs e)
         {
-            ptb_mouseCursor.Visible = false;
+            //ptb_mouseCursor.Visible = false;
         }
+
     }
 }
