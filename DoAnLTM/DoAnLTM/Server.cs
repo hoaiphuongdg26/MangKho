@@ -25,7 +25,6 @@ namespace DoAnLTM
         private bool isListening = true;
         private bool isConnected = false;
 
-
         [DllImport("user32.dll")]
         private static extern bool NativeSetCursorPos(int X, int Y);
 
@@ -132,7 +131,7 @@ namespace DoAnLTM
             {
                 ptb_mouseCursor.Visible = false;
             }));
-            DisplayMessage("No connection... Listening for connections.");
+            DisplayMessage("No connection. Listening for connections...");
             // Đóng kết nối và dừng lắng nghe
             stream.Close();
             client.Close();
