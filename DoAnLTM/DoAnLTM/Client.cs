@@ -65,7 +65,7 @@ namespace DoAnLTM
         }
 
         private void bnt_Disconnect_Click(object sender, EventArgs e)
-        {
+        {         
             // Đóng kết nối và xóa sự kiện di chuyển chuột
             if (stream != null)
                 stream.Close();
@@ -97,10 +97,9 @@ namespace DoAnLTM
                     stream.Write(buffer, 0, buffer.Length);
                     buffer = BitConverter.GetBytes(e.Y);
                     stream.Write(buffer, 0, buffer.Length);
-
                 }
                 // Cập nhật toạ độ chuột trên Label
-                lbl_MousePosition.Text = $"X: {e.X}, Y: {e.Y}";
+                //lbl_MousePosition.Text = $"X: {e.X}, Y: {e.Y}";
             }
             catch (Exception ex)
             {

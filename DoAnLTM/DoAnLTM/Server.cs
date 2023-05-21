@@ -40,6 +40,7 @@ namespace DoAnLTM
             //Khởi tạo lắng nghe kết nối từ Client
             listener = new TcpListener(IPAddress.Any, ServerPort);
             listener.Start();
+            MessageBox.Show("Server started, listening for connections...", "Listen", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             //Bắt đầu chấp nhận kết nối từ Client
             listener.BeginAcceptTcpClient(AcceptCallBack, null);
@@ -54,7 +55,7 @@ namespace DoAnLTM
                 ptb_mouseCursor.Location = virtualMousePosition;
 
                 // Cập nhật toạ độ chuột trên Label
-                lbl_MousePosition.Text = $"X: {x}, Y: {y}";
+                //lbl_MousePosition.Text = $"X: {x}, Y: {y}";
             }));
         }
         private void DisplayMessage(string message)
@@ -77,10 +78,10 @@ namespace DoAnLTM
             // Cập nhật trạng thái kết nối
             isConnected = true;
 
+            //MessageBox.Show("Connection accepted from 127.0.0.1:3000\n", "Connect", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            DisplayMessage("Connection accepted from 127.0.0.1:3000\n");
+            //DisplayMessage("Conneted...");
 
-
-
-            DisplayMessage("Server started, listening for connections...\nConnection accepted from 127.0.0.1:3000\n");
             client = listener.EndAcceptTcpClient(ar);
             stream = client.GetStream();
             // Tạo kích thước cho buffer là 8 byte, 4 byte cho toạ độ X, 4 byte cho toạ độ Y
@@ -127,9 +128,6 @@ namespace DoAnLTM
             stream.Close();
             client.Close();
             //listener.Stop();
-
-            // Hiển thị thông báo client đã ngắt kết nối
-            MessageBox.Show("Client disconnected.");
         }
         private void Server_Load(object sender, EventArgs e)
         {
