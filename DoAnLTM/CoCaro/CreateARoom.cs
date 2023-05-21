@@ -29,7 +29,7 @@ namespace CoCaro
             newRoom.Show();
             this.Close();
 
-            //Tạo server mới
+            /*//Tạo server mới
             IPAddress ipAddress = IPAddress.Parse(txt_IPServer.Text);
             int ServerPort = 3030;
 
@@ -38,7 +38,7 @@ namespace CoCaro
             listener.Start();
 
             //Bắt đầu chấp nhận kết nối từ Client
-            listener.BeginAcceptTcpClient(AcceptCallBack, null);
+            listener.BeginAcceptTcpClient(AcceptCallBack, null);*/
         }
         private void AcceptCallBack(IAsyncResult ar)
         {

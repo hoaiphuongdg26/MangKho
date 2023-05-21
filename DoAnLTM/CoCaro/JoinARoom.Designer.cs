@@ -1,6 +1,6 @@
 ﻿namespace CoCaro
 {
-    partial class Home
+    partial class JoinARoom
     {
         /// <summary>
         /// Required designer variable.
@@ -28,44 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btn_JoinARoom = new Button();
-            btn_CreateARoom = new Button();
-            panel1 = new Panel();
+            label1 = new Label();
             menuStrip1 = new MenuStrip();
             menuToolStripMenuItem = new ToolStripMenuItem();
             quitToolStripMenuItem = new ToolStripMenuItem();
-            panel1.SuspendLayout();
+            btn_Join = new Button();
+            panel1 = new Panel();
             menuStrip1.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // btn_JoinARoom
+            // label1
             // 
-            btn_JoinARoom.Location = new Point(194, 165);
-            btn_JoinARoom.Name = "btn_JoinARoom";
-            btn_JoinARoom.Size = new Size(147, 29);
-            btn_JoinARoom.TabIndex = 1;
-            btn_JoinARoom.Text = "Join a room";
-            btn_JoinARoom.UseVisualStyleBackColor = true;
-            btn_JoinARoom.Click += btn_JoinARoom_Click;
-            // 
-            // btn_CreateARoom
-            // 
-            btn_CreateARoom.Location = new Point(194, 113);
-            btn_CreateARoom.Name = "btn_CreateARoom";
-            btn_CreateARoom.Size = new Size(147, 29);
-            btn_CreateARoom.TabIndex = 0;
-            btn_CreateARoom.Text = "Create new game";
-            btn_CreateARoom.UseVisualStyleBackColor = true;
-            btn_CreateARoom.Click += btn_CreateARoom_Click;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(btn_JoinARoom);
-            panel1.Controls.Add(btn_CreateARoom);
-            panel1.Location = new Point(12, 31);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(535, 304);
-            panel1.TabIndex = 3;
+            label1.AutoSize = true;
+            label1.Location = new Point(14, 14);
+            label1.Name = "label1";
+            label1.Size = new Size(117, 20);
+            label1.TabIndex = 0;
+            label1.Text = "Available rooms";
             // 
             // menuStrip1
             // 
@@ -73,8 +53,8 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { menuToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(558, 28);
-            menuStrip1.TabIndex = 4;
+            menuStrip1.Size = new Size(800, 28);
+            menuStrip1.TabIndex = 6;
             menuStrip1.Text = "menuStrip1";
             // 
             // menuToolStripMenuItem
@@ -87,33 +67,52 @@
             // quitToolStripMenuItem
             // 
             quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            quitToolStripMenuItem.Size = new Size(224, 26);
+            quitToolStripMenuItem.Size = new Size(120, 26);
             quitToolStripMenuItem.Text = "Quit";
-            quitToolStripMenuItem.Click += quitToolStripMenuItem_Click;
             // 
-            // Home
+            // btn_Join
+            // 
+            btn_Join.Location = new Point(341, 423);
+            btn_Join.Name = "btn_Join";
+            btn_Join.Size = new Size(94, 29);
+            btn_Join.TabIndex = 5;
+            btn_Join.Text = "Join";
+            btn_Join.UseVisualStyleBackColor = true;
+            btn_Join.Click += btn_Join_Click;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(label1);
+            panel1.Location = new Point(12, 29);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(776, 388);
+            panel1.TabIndex = 7;
+            // 
+            // JoinARoom
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(558, 347);
-            Controls.Add(panel1);
+            ClientSize = new Size(800, 459);
             Controls.Add(menuStrip1);
-            Name = "Home";
-            Text = "Home";
-            panel1.ResumeLayout(false);
+            Controls.Add(btn_Join);
+            Controls.Add(panel1);
+            Name = "JoinARoom";
+            Text = "JoinARoom";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button btn_JoinARoom;
-        private Button btn_CreateARoom;
-        private Panel panel1;
+        private Label label1;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem menuToolStripMenuItem;
         private ToolStripMenuItem quitToolStripMenuItem;
+        private Button btn_Join;
+        private Panel panel1;
     }
 }
