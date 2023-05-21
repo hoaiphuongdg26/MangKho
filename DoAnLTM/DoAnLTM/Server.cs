@@ -22,6 +22,9 @@ namespace DoAnLTM
         private TcpClient client;
         private NetworkStream stream;
         private byte[] buffer;
+        //test
+        private bool isListening = true;
+
 
         //mới thêm 
         private bool isConnected = false;
@@ -36,7 +39,6 @@ namespace DoAnLTM
             //Tạo IP Address và Port cho Server
             IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             int ServerPort = 3000;
-
             //Khởi tạo lắng nghe kết nối từ Client
             listener = new TcpListener(IPAddress.Any, ServerPort);
             listener.Start();
@@ -71,31 +73,34 @@ namespace DoAnLTM
         }
         private void AcceptCallBack(IAsyncResult ar)
         {
-            //test mới thêm
-            // Bắt đầu chấp nhận kết nối từ Client
-            listener.BeginAcceptTcpClient(AcceptCallBack, null);
-
-            // Cập nhật trạng thái kết nối
-            isConnected = true;
-
-            //MessageBox.Show("Connection accepted from 127.0.0.1:3000\n", "Connect", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            DisplayMessage("Connection accepted from 127.0.0.1:3000\n");
-            //DisplayMessage("Conneted...");
-
-            client = listener.EndAcceptTcpClient(ar);
-            stream = client.GetStream();
-            // Tạo kích thước cho buffer là 8 byte, 4 byte cho toạ độ X, 4 byte cho toạ độ Y
-            buffer = new byte[8];
-
-            // Bắt đầu đọc toạ độ chuột
-            stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
-
-            // Cập nhật vị trí ban đầu của con chuột
-            Invoke((Action)(() =>
+            if (isListening)
             {
-                ptb_mouseCursor.Location = Cursor.Position;
-                ptb_mouseCursor.Visible = true;
-            }));
+                //test mới thêm
+                // Bắt đầu chấp nhận kết nối từ Client
+                listener.BeginAcceptTcpClient(AcceptCallBack, null);
+
+                // Cập nhật trạng thái kết nối
+                isConnected = true;
+
+                //MessageBox.Show("Connection accepted from 127.0.0.1:3000\n", "Connect", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DisplayMessage("Connection accepted from 127.0.0.1:3000\n");
+                //DisplayMessage("Conneted...");
+
+                client = listener.EndAcceptTcpClient(ar);
+                stream = client.GetStream();
+                // Tạo kích thước cho buffer là 8 byte, 4 byte cho toạ độ X, 4 byte cho toạ độ Y
+                buffer = new byte[8];
+
+                // Bắt đầu đọc toạ độ chuột
+                stream.BeginRead(buffer, 0, buffer.Length, ReadCallback, null);
+
+                // Cập nhật vị trí ban đầu của con chuột
+                Invoke((Action)(() =>
+                {
+                    ptb_mouseCursor.Location = Cursor.Position;
+                    ptb_mouseCursor.Visible = true;
+                }));
+            }
         }
         private void ReadCallback(IAsyncResult ar)
         {
@@ -144,6 +149,10 @@ namespace DoAnLTM
         {
             //ptb_mouseCursor.Visible = false;
         }
-
+        private void Server_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            listener.Stop();
+            isListening = false;
+        }
     }
 }

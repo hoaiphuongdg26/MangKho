@@ -63,6 +63,7 @@
             Controls.Add(txt_ServerLog);
             Name = "Server";
             Text = "Server";
+            FormClosing += Server_FormClosing;
             Load += Server_Load;
             MouseEnter += Server_MouseEnter;
             MouseLeave += Server_MouseLeave;
