@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             txt_ServerLog = new TextBox();
-            lbl_MousePosition = new Label();
             ptb_mouseCursor = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)ptb_mouseCursor).BeginInit();
             SuspendLayout();
@@ -44,21 +43,14 @@
             txt_ServerLog.Size = new Size(776, 20);
             txt_ServerLog.TabIndex = 1;
             // 
-            // lbl_MousePosition
-            // 
-            lbl_MousePosition.AutoSize = true;
-            lbl_MousePosition.Location = new Point(628, 12);
-            lbl_MousePosition.Name = "lbl_MousePosition";
-            lbl_MousePosition.Size = new Size(50, 20);
-            lbl_MousePosition.TabIndex = 14;
-            lbl_MousePosition.Text = "label1";
-            // 
             // ptb_mouseCursor
             // 
             ptb_mouseCursor.BackColor = SystemColors.Highlight;
+            ptb_mouseCursor.Image = Properties.Resources.click_icon_isolated_on_white_260nw_1722492346__1_1;
             ptb_mouseCursor.Location = new Point(338, 257);
             ptb_mouseCursor.Name = "ptb_mouseCursor";
-            ptb_mouseCursor.Size = new Size(37, 38);
+            ptb_mouseCursor.Size = new Size(19, 22);
+            ptb_mouseCursor.SizeMode = PictureBoxSizeMode.StretchImage;
             ptb_mouseCursor.TabIndex = 15;
             ptb_mouseCursor.TabStop = false;
             // 
@@ -68,10 +60,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(ptb_mouseCursor);
-            Controls.Add(lbl_MousePosition);
             Controls.Add(txt_ServerLog);
             Name = "Server";
             Text = "Server";
+            FormClosing += Server_FormClosing;
             Load += Server_Load;
             MouseEnter += Server_MouseEnter;
             MouseLeave += Server_MouseLeave;
@@ -83,7 +75,6 @@
         #endregion
 
         private TextBox txt_ServerLog;
-        private Label lbl_MousePosition;
         private PictureBox ptb_mouseCursor;
     }
 }
