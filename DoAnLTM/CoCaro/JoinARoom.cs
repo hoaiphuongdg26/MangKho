@@ -16,7 +16,6 @@ namespace CoCaro
         {
             InitializeComponent();
         }
-
         private void btn_Join_Click(object sender, EventArgs e)
         {
             Room_CLIENT room = new Room_CLIENT();
