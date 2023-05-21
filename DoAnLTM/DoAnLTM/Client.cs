@@ -94,7 +94,7 @@ namespace DoAnLTM
                 {
                     // Gửi tọa độ chuột tới server
                     byte[] buffer = BitConverter.GetBytes(e.X);
-                    stream.Write(buffer, 4, buffer.Length);
+                    stream.Write(buffer, 0, buffer.Length);
                     buffer = BitConverter.GetBytes(e.Y);
                     stream.Write(buffer, 0, buffer.Length);
 
