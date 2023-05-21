@@ -42,7 +42,8 @@ namespace DoAnLTM
             //Khởi tạo lắng nghe kết nối từ Client
             listener = new TcpListener(IPAddress.Any, ServerPort);
             listener.Start();
-            MessageBox.Show("Server started, listening for connections...", "Listen", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            DisplayMessage("Server started, listening for connections...");
+            //MessageBox.Show("Server started, listening for connections...", "Listen", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             //Bắt đầu chấp nhận kết nối từ Client
             listener.BeginAcceptTcpClient(AcceptCallBack, null);
@@ -59,7 +60,12 @@ namespace DoAnLTM
         {
             if (txt_ServerLog.InvokeRequired)
             {
-                txt_ServerLog.Invoke(new Action<string>(DisplayMessage), new object[] { message });
+                //txt_ServerLog.Invoke(new Action<string>(DisplayMessage), new object[] { "" });
+                Invoke((Action)(() =>
+                {
+                    txt_ServerLog.Text = "";
+                    txt_ServerLog.Text = message;
+                }));
             }
             else
             {
@@ -110,6 +116,7 @@ namespace DoAnLTM
 
                 int mouseX = BitConverter.ToInt32(buffer, 4);
                 int mouseY = BitConverter.ToInt32(buffer, 0);
+
                 // Di chuyển chuột trên máy chủ
                 Invoke((Action)(() => SetCursorPos(mouseX, mouseY)));
 
@@ -126,6 +133,7 @@ namespace DoAnLTM
             // Đóng kết nối và dừng lắng nghe
             stream.Close();
             client.Close();
+            isConnected = false;
         }
         private void Server_Load(object sender, EventArgs e)
         {
@@ -139,8 +147,17 @@ namespace DoAnLTM
         }
         private void Server_FormClosing(object sender, FormClosingEventArgs e)
         {
-            listener.Stop();
-            isListening = false;
+            if (isConnected)
+            {
+                MessageBox.Show("Please disconnect before exiting!", "UNABLE TO EXIT", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //K đóng form nữa
+                e.Cancel = true;
+            }
+            else
+            {
+                listener.Stop();
+                isListening = false;
+            }
         }
     }
 }
