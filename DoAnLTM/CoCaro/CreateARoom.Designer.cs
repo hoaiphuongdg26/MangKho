@@ -71,6 +71,7 @@
             // 
             txt_IPServer.Location = new Point(187, 13);
             txt_IPServer.Name = "txt_IPServer";
+            txt_IPServer.ReadOnly = true;
             txt_IPServer.Size = new Size(180, 27);
             txt_IPServer.TabIndex = 8;
             // 
@@ -103,7 +104,7 @@
             // quitToolStripMenuItem
             // 
             quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            quitToolStripMenuItem.Size = new Size(224, 26);
+            quitToolStripMenuItem.Size = new Size(120, 26);
             quitToolStripMenuItem.Text = "Quit";
             // 
             // panel1
