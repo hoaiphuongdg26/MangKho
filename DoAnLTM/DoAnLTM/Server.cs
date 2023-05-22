@@ -55,6 +55,8 @@ namespace DoAnLTM
         }
         private void DisplayMessage(string message)
         {
+            if (txt_ServerLog.IsDisposed)
+        return;
             if (txt_ServerLog.InvokeRequired)
             {
                 Invoke((Action)(() =>
@@ -132,15 +134,22 @@ namespace DoAnLTM
         }
         private void DisconnectClient()
         {
-            Invoke((Action)(() =>
+            try
             {
-                ptb_mouseCursor.Visible = false;
-            }));
-            DisplayMessage("No connection. Listening for connections...");
-            // Đóng kết nối và dừng lắng nghe
-            stream.Close();
-            client.Close();
-            isConnected = false;
+                Invoke((Action)(() =>
+                {
+                    ptb_mouseCursor.Visible = false;
+                }));
+                DisplayMessage("No connection. Listening for connections...");
+                // Đóng kết nối và dừng lắng nghe
+                stream.Close();
+                client.Close();
+                isConnected = false;
+            }
+            catch (Exception ex)
+            {
+                DisplayMessage(ex.ToString());
+            }
         }
         private void Server_Load(object sender, EventArgs e)
         {
