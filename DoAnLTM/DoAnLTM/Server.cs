@@ -15,7 +15,6 @@ namespace DoAnLTM
 {
     public partial class Server : Form
     {
-        //private bool isMouseCursorVisible = false;
         private Point virtualMousePosition = Point.Empty;
         private const int MOUSEEVENTF_MOVE = 0x0001;
         private TcpListener listener;
@@ -25,7 +24,6 @@ namespace DoAnLTM
 
         private bool isListening = true;
         private bool isConnected = false;
-
 
         [DllImport("user32.dll")]
         private static extern bool NativeSetCursorPos(int X, int Y);
@@ -43,7 +41,6 @@ namespace DoAnLTM
             listener = new TcpListener(IPAddress.Any, ServerPort);
             listener.Start();
             DisplayMessage("Server started, listening for connections...");
-            //MessageBox.Show("Server started, listening for connections...", "Listen", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             //Bắt đầu chấp nhận kết nối từ Client
             listener.BeginAcceptTcpClient(AcceptCallBack, null);
@@ -60,7 +57,6 @@ namespace DoAnLTM
         {
             if (txt_ServerLog.InvokeRequired)
             {
-                //txt_ServerLog.Invoke(new Action<string>(DisplayMessage), new object[] { "" });
                 Invoke((Action)(() =>
                 {
                     txt_ServerLog.Text = "";
@@ -114,10 +110,11 @@ namespace DoAnLTM
             {
                 int bytesRead = stream.EndRead(ar);
                 if (bytesRead == 0)
+                {
+                    DisconnectClient();
                     return;
-
+                }
                 // Đọc tọa độ chuột từ client
-
                 int mouseX = BitConverter.ToInt32(buffer, 4);
                 int mouseY = BitConverter.ToInt32(buffer, 0);
 
@@ -135,6 +132,11 @@ namespace DoAnLTM
         }
         private void DisconnectClient()
         {
+            Invoke((Action)(() =>
+            {
+                ptb_mouseCursor.Visible = false;
+            }));
+            DisplayMessage("No connection. Listening for connections...");
             // Đóng kết nối và dừng lắng nghe
             stream.Close();
             client.Close();
@@ -147,7 +149,6 @@ namespace DoAnLTM
 
         private void Server_MouseEnter(object sender, EventArgs e)
         {
-            //ptb_mouseCursor.Visible = true;
             Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));
         }
         private void Server_FormClosing(object sender, FormClosingEventArgs e)
@@ -162,6 +163,12 @@ namespace DoAnLTM
             {
                 listener.Stop();
                 isListening = false;
+            }
+
+            // Enable lại nút Server trong form Dashboard
+            if (Application.OpenForms["Dashboard"] is Dashboard dashboardForm)
+            {
+                dashboardForm.buttonServer(true);
             }
         }
     }

@@ -60,7 +60,7 @@ namespace DoAnLTM
 
         private void bnt_Disconnect_Click(object sender, EventArgs e)
         {
-            // Đóng kết nối và xóa sự kiện di chuyển chuột
+            // Đóng kết nối 
             if (stream != null)
                 stream.Close();
             if (client != null)
@@ -69,6 +69,8 @@ namespace DoAnLTM
             // Xóa sự kiện di chuyển chuột chỉ khi trạng thái kết nối là true
             if (isConnected)
                 MouseMove -= Client_MouseMove;
+
+
 
             // Cập nhật trạng thái kết nối
             isConnected = false;
@@ -99,6 +101,12 @@ namespace DoAnLTM
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
             bnt_Disconnect_Click(sender, e);
+
+            // Enable lại nút Client trong form Dashboard
+            if (Application.OpenForms["Dashboard"] is Dashboard dashboardForm)
+            {
+                dashboardForm.buttonClient(true);
+            }
         }
     }
 }
