@@ -103,6 +103,10 @@ namespace DoAnLTM
                     ptb_mouseCursor.Visible = true;
                 }));
             }
+            else
+            {
+                DisconnectClient();
+            }
         }
         private void ReadCallback(IAsyncResult ar)
         {
@@ -126,6 +130,7 @@ namespace DoAnLTM
             catch (IOException)
             {
                 DisconnectClient();
+                isListening = false;
             }
         }
         private void DisconnectClient()
