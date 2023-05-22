@@ -10,17 +10,7 @@ using System.Windows.Forms;
 
 namespace CoCaro
 {
-    public class Room
-    {
-        public string Id { get; set; }
-        public bool IsOwner { get; set; }
-
-        public Room(string id, bool isOwner)
-        {
-            Id = id;
-            IsOwner = isOwner;
-        }
-    }
+    
 
     public partial class Home : Form
     {
@@ -52,4 +42,5 @@ namespace CoCaro
 
         }
     }
+    
 }
