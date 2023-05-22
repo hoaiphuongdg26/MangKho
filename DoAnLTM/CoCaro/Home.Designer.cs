@@ -87,7 +87,7 @@
             // quitToolStripMenuItem
             // 
             quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            quitToolStripMenuItem.Size = new Size(224, 26);
+            quitToolStripMenuItem.Size = new Size(120, 26);
             quitToolStripMenuItem.Text = "Quit";
             quitToolStripMenuItem.Click += quitToolStripMenuItem_Click;
             // 
@@ -100,6 +100,7 @@
             Controls.Add(menuStrip1);
             Name = "Home";
             Text = "Home";
+            Load += Home_Load;
             panel1.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
