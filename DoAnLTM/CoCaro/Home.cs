@@ -34,7 +34,7 @@ namespace CoCaro
         }
         private void btn_JoinARoom_Click(object sender, EventArgs e)
         {
-            JoinARoom joinRoom = new JoinARoom();
+            JoinARoom joinRoom = new JoinARoom(rooms);
             joinRoom.Show();
         }
 

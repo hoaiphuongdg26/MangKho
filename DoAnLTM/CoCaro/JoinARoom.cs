@@ -13,7 +13,7 @@ namespace CoCaro
     public partial class JoinARoom : Form
     {
         List<Room> rooms;
-        public JoinARoom()
+        public JoinARoom(List<Room> existingRooms)
         {
             InitializeComponent();
             this.rooms = rooms;
