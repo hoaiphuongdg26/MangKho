@@ -12,9 +12,11 @@ namespace CoCaro
 {
     public partial class JoinARoom : Form
     {
+        List<Room> rooms;
         public JoinARoom()
         {
             InitializeComponent();
+            this.rooms = rooms;
         }
         private void btn_Join_Click(object sender, EventArgs e)
         {
