@@ -28,12 +28,13 @@ namespace CoCaro
         private void btn_CreateARoom_Click(object sender, EventArgs e)
         {
             // Tạo mới form CreateRoom và truyền danh sách các phòng
-            CreateARoom newRoom = new CreateARoom();
+            CreateARoom newRoom = new CreateARoom(rooms);
+            newRoom.UpdateRoomList(rooms);
             newRoom.Show();
         }
         private void btn_JoinARoom_Click(object sender, EventArgs e)
         {
-            JoinARoom joinRoom = new JoinARoom();
+            JoinARoom joinRoom = new JoinARoom(rooms);
             joinRoom.Show();
         }
 

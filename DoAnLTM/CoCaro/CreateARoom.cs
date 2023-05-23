@@ -17,11 +17,18 @@ namespace CoCaro
         private TcpListener listener;
         private TcpClient client;
         private NetworkStream stream;
-        public CreateARoom()
+
+        private List<Room> rooms;
+        public CreateARoom(List<Room> existingRooms)
         {
             InitializeComponent();
+            rooms = existingRooms;
         }
-
+        public void UpdateRoomList(List<Room> updatedRooms)
+        {
+            rooms = updatedRooms;
+            // Cập nhật giao diện người dùng với danh sách phòng mới
+        }
         private void btn_CreateARoom_Click(object sender, EventArgs e)
         {
             //Mở form của người chơi đóng vai trò là chủ phòng
