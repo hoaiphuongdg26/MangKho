@@ -35,6 +35,7 @@
             bnt_Disconnect = new Button();
             txt_ServerIP = new TextBox();
             ptb_mouseCursor = new PictureBox();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)ptb_mouseCursor).BeginInit();
             SuspendLayout();
             // 
@@ -116,12 +117,22 @@
             ptb_mouseCursor.TabIndex = 12;
             ptb_mouseCursor.TabStop = false;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(27, 87);
+            label3.Name = "label3";
+            label3.Size = new Size(50, 20);
+            label3.TabIndex = 13;
+            label3.Text = "label3";
+            // 
             // Client
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ButtonFace;
             ClientSize = new Size(800, 450);
+            Controls.Add(label3);
             Controls.Add(ptb_mouseCursor);
             Controls.Add(txt_Port);
             Controls.Add(label2);
@@ -147,5 +158,6 @@
         private Button bnt_Disconnect;
         private TextBox txt_ServerIP;
         private PictureBox ptb_mouseCursor;
+        private Label label3;
     }
 }

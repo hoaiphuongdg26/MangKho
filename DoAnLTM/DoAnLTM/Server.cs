@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection.Emit;
 
 namespace DoAnLTM
 {
@@ -56,7 +57,7 @@ namespace DoAnLTM
         private void DisplayMessage(string message)
         {
             if (txt_ServerLog.IsDisposed)
-        return;
+                return;
             if (txt_ServerLog.InvokeRequired)
             {
                 Invoke((Action)(() =>
@@ -119,7 +120,10 @@ namespace DoAnLTM
                 // Đọc tọa độ chuột từ client
                 int mouseX = BitConverter.ToInt32(buffer, 4);
                 int mouseY = BitConverter.ToInt32(buffer, 0);
-
+                Invoke((Action)(() =>
+                {
+                    label1.Text = $"X: {mouseX}, Y: {mouseY}";
+                }));
                 // Di chuyển chuột trên máy chủ
                 Invoke((Action)(() => SetCursorPos(mouseX, mouseY)));
 

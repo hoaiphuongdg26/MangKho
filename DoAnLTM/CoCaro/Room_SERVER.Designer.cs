@@ -61,7 +61,7 @@
             // quitToolStripMenuItem
             // 
             quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            quitToolStripMenuItem.Size = new Size(224, 26);
+            quitToolStripMenuItem.Size = new Size(162, 26);
             quitToolStripMenuItem.Text = "Quit game";
             quitToolStripMenuItem.Click += quitToolStripMenuItem_Click;
             // 
@@ -105,6 +105,7 @@
             btn_PlayGame.TabIndex = 9;
             btn_PlayGame.Text = "Play game";
             btn_PlayGame.UseVisualStyleBackColor = true;
+            btn_PlayGame.Click += btn_PlayGame_Click;
             // 
             // btn_Undo
             // 

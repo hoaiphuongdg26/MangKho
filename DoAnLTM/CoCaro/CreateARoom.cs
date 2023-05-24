@@ -33,6 +33,7 @@ namespace CoCaro
         {
             //Mở form của người chơi đóng vai trò là chủ phòng
             Room_SERVER newRoom = new Room_SERVER();
+            //rooms.Add(newRoom);
             newRoom.Show();
             this.Close();
 

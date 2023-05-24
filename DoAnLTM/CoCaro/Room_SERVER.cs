@@ -18,7 +18,7 @@ namespace CoCaro
         private static int CHESS_COL = 26;
         public Room_SERVER()
         {
-            InitializeComponent(); 
+            InitializeComponent();
             IntializeChessboard();
         }
         private void IntializeChessboard()
@@ -49,6 +49,11 @@ namespace CoCaro
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btn_PlayGame_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -29,6 +29,7 @@ namespace CoCaro
         {
             // Tạo mới form CreateRoom và truyền danh sách các phòng
             CreateARoom newRoom = new CreateARoom(rooms);
+            //rooms.Add(newRoom);
             newRoom.UpdateRoomList(rooms);
             newRoom.Show();
         }
