@@ -51,6 +51,7 @@ namespace CoCaro
         {
             Button btn = sender as Button;
             btn.Image = Image.FromFile(Application.StartupPath + "\\Pictures\\O.png");
+            //D:\\TH-LapTrinhMang\\MangKho\\DoAnLTM\\CoCaro\\Pictures\\O.png
         }
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
