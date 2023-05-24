@@ -37,7 +37,9 @@ namespace CoCaro
                         Width = CHESS_WIDTH,
                         Height = CHESS_HEIGHT,
                         Location = new Point(oldButton.Location.X + CHESS_WIDTH, oldButton.Location.Y),
+                        BackgroundImageLayout = ImageLayout.Stretch
                     };
+                    cellButton.Click += cellButton_Click;
                     pn_Chessboard.Controls.Add(cellButton);
                     oldButton = cellButton;
                 }
@@ -45,7 +47,11 @@ namespace CoCaro
                 oldButton.Width = 0; oldButton.Height = 0;
             }
         }
-
+        private void cellButton_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            btn.Image = Image.FromFile(Application.StartupPath + "\\Pictures\\O.png");
+        }
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
