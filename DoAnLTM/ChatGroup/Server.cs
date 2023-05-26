@@ -22,7 +22,7 @@ namespace ChatGroup
         //Danh sách lưu tên người dùng với mỗi client được kết nối
         private ConcurrentDictionary<TcpClient, string> userNames = new ConcurrentDictionary<TcpClient, string>();
         //Danh sách lưu tên file và nội dung file
-        private ConcurrentDictionary<string, byte[]> files = new ConcurrentDictionary<string, byte[]>();
+        private ConcurrentDictionary<string, string> files = new ConcurrentDictionary<string, string>();
 
         //Dùng để kiểm tra xem Server có đang chạy hay không
         private bool isServerRunning;
@@ -35,19 +35,11 @@ namespace ChatGroup
         {
             if (rtb_Server.InvokeRequired)
             {
-                //lock (rtb_Server)
-
-                if (!rtb_Server.IsDisposed)
-                    rtb_Server.Invoke(new Action<string>(Log), message);
-
+                rtb_Server.Invoke(new Action<string>(Log), message);
             }
             else
             {
-                if (rtb_Server.IsDisposed)
-                {
-                    return;
-                }
-
+                //serverTextBox.AppendText(message);
                 string[] messageParts = message.Split(':');
                 if (messageParts.Length == 2)
                 {
@@ -55,8 +47,8 @@ namespace ChatGroup
                     rtb_Server.SelectionFont = boldFont;
                     rtb_Server.AppendText(messageParts[0]);
 
-                    Font italicFont = new Font(rtb_Server.Font, FontStyle.Italic);
-                    rtb_Server.SelectionFont = italicFont;
+                    Font ItalicFont = new Font(rtb_Server.Font, FontStyle.Italic);
+                    rtb_Server.SelectionFont = ItalicFont;
                     rtb_Server.AppendText($": ({DateTime.Now})");
 
                     rtb_Server.SelectionFont = rtb_Server.Font; // Đặt lại font gốc
@@ -66,13 +58,8 @@ namespace ChatGroup
                 {
                     rtb_Server.AppendText(message + "\n");
                 }
-
-                // Kéo màn hình xuống dưới cùng
-                rtb_Server.SelectionStart = rtb_Server.Text.Length;
-                rtb_Server.ScrollToCaret();
             }
         }
-
         private void Listen_Click(object sender, EventArgs e)
         {
             int port = 8080;
@@ -132,93 +119,64 @@ namespace ChatGroup
         //Hàm này để nhận tin nhắn
         private void ReceiveMessages(TcpClient client)
         {
-            try
+            //Tạo 1 stream để đọc và ghi tin nhắn gửi từ Client
+            using (NetworkStream stream = client.GetStream())
             {
-                if (client == null)
-                {
-                    return;
-                }
+                //Mảng này để đọc dữ liệu từ stream đó
+                byte[] buffer = new byte[1024];
 
-                // Kiểm tra xem client đã kết nối hay chưa
-                if (!client.Connected)
+                //Nếu vẫn còn kết nối thì vẫn nhận tin nhắn
+                while (client.Connected)
                 {
-                    Log("Client is not connected.");
-                    return;
-                }
-                //Tạo 1 stream để đọc và ghi tin nhắn gửi từ Client
-                using (NetworkStream stream = client.GetStream())
-                {
-                    //Mảng này để đọc dữ liệu từ stream đó
-                    byte[] buffer = new byte[1024];
-
-                    //Nếu vẫn còn kết nối thì vẫn nhận tin nhắn
-                    while (client.Connected)
+                    if (stream.DataAvailable)
                     {
-                        if (stream.DataAvailable)
+                        //Đọc dữ liệu từ stream vào mảng byte
+                        int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                        if (bytesRead == 0)
                         {
-                            //Đọc dữ liệu từ stream vào mảng byte
-                            int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                            if (bytesRead == 0)
-                            {
-                                break;
-                            }
+                            break;
+                        }
 
-                            //Chuyển dữ liệu đọc thành chuỗi
-                            //string userName = userNames[client];
-                            string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                        //Chuyển dữ liệu đọc thành chuỗi
+                        string userName = userNames[client];
+                        string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                            // Lấy tên người dùng từ userNames
-                            string userName;
-                            lock (userNames)
-                            {
-                                if (!userNames.TryGetValue(client, out userName))
-                                {
-                                    Log("Unknown client.");
-                                    return;
-                                }
-                            }
+                        if (receivedData.Contains("[FILE]"))
+                        {
+                            string[] arr_message = receivedData.Split($"[FILE] - ");
+                            int colonIndex = arr_message[1].IndexOf(":");
+                            string fileName = arr_message[1].Substring(0, colonIndex + 1);
+                            //byte[] fileContent = buffer.Skip(Encoding.UTF8.GetBytes(arr_message[0]).Length).ToArray();
+                            string fileContent = arr_message[1].Substring(colonIndex + 1);
+                            files[fileName] = fileContent;
 
-                            if (receivedData.Contains("[FILE]"))
-                            {
-                                string[] arr_message = receivedData.Split($"[FILE] - ");
-                                int colonIndex = arr_message[1].IndexOf(":");
-                                string fileName = arr_message[1].Substring(0, colonIndex + 1);
-                                byte[] fileContent = buffer.Skip(Encoding.UTF8.GetBytes(arr_message[0]).Length).ToArray();
-                                files[fileName] = fileContent;
+                            //Với tb_Messgae
+                            /*Log($"{arr_message[0]}");
+                            SendMessageToAllClients(client, $"{arr_message[0]}");*/
 
-                                //In ra màn hình
-                                Log($"{arr_message[0]}");
-                                //Gửi tới các client khác nữa
-                                SendMessageToAllClients(client, $"{arr_message[0]}");
-
-                                // Gửi thông báo cho tất cả các client khác
-                                string fileMessage = $"{userName} [FILE] - " + arr_message[1];
-                                Log(fileMessage);
-                                SendMessageToAllClients(client, fileMessage);
-                            }
-                            else
-                            {
-                                //In ra màn hình
-                                Log($"{receivedData}");
-                                //Gửi tới các client khác nữa
-                                SendMessageToAllClients(client, $"{receivedData}");
-                            }
+                            //Với fileAttach
+                            Log(receivedData);
+                            SendMessageToAllClients(client, receivedData);
+                        }
+                        else
+                        {
+                            //In ra màn hình
+                            Log($"{receivedData}");
+                            //Gửi tới các client khác nữa
+                            SendMessageToAllClients(client, $"{receivedData}");
                         }
                     }
-                    //Xoá Client khỏi ds
-                    lock (connectedClients)
-                    {
-                        connectedClients.Remove(client);
-                    }
-
-                    //Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
-                    stream.Close();
                 }
+                //Xoá Client khỏi ds
+                lock (connectedClients)
+                {
+                    connectedClients.Remove(client);
+                }
+
+                Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
+                stream.Close();
             }
-            catch (Exception ex)
-            {
-                Log(ex.ToString());
-            }
+            
         }
         private async Task SendMessageToAllClients(TcpClient senderClient, string message)
         {
@@ -262,18 +220,15 @@ namespace ChatGroup
             // Nếu người dùng chọn Yes
             if (result == DialogResult.Yes)
             {
-                // Tạo một bản sao của danh sách connectedClients để lặp qua
-                List<TcpClient> clientsCopy = new List<TcpClient>(connectedClients);
-
-                // Duyệt qua danh sách các client và ngắt kết nối với mỗi client
-                foreach (TcpClient client in clientsCopy)
+                // Ngắt kết nối với tất cả các client
+                if (connectedClients.Count > 0)
                 {
-                    client.Close();
-                    connectedClients.Remove(client);
+                    // Duyệt qua danh sách các client và ngắt kết nối với mỗi client
+                    foreach (TcpClient client in connectedClients)
+                    {
+                        client.Close();
+                    }
                 }
-
-                server.Stop();
-                connectedClients.Clear();
             }
             else
             {
@@ -281,5 +236,6 @@ namespace ChatGroup
                 e.Cancel = true;
             }
         }
+
     }
 }

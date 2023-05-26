@@ -21,7 +21,7 @@ namespace ChatGroup
         private bool isConnectedToServer = false;
         private string userName;
         private string attachmentFilePath = null;
-        private ConcurrentDictionary<string, string> files = new ConcurrentDictionary<string, string>();
+        private ConcurrentDictionary<string, byte[]> files = new ConcurrentDictionary<string, byte[]>();
         public Client()
         {
             InitializeComponent();
@@ -39,13 +39,14 @@ namespace ChatGroup
             {
                 string receivedData = ReadMessage(stream);
                 //string fileName = Path.GetFileName(attachmentFilePath);
-                if (receivedData != null && receivedData.Contains("[FILE]"))
+                if (receivedData.Contains("[FILE]"))
                 {
                     AppendMessage(receivedData);
                     string[] arr_message = receivedData.Split($"[FILE] - ");
                     int colonIndex = arr_message[1].IndexOf(":");
                     string fileName = arr_message[1].Substring(0, colonIndex);
                     string fileContents = arr_message[1].Substring(colonIndex + 1);
+
                     AppendAttach(fileName, fileContents);
                 }
                 else if (receivedData != null)
@@ -58,7 +59,6 @@ namespace ChatGroup
                     break;
                 }
             }
-
         }
         private void btn_Join_Click(object sender, EventArgs e)
         {
@@ -176,24 +176,22 @@ namespace ChatGroup
                 {
                     rtb_Client.AppendText(message + "\n");
                 }
-                //Kéo màn hình xuống dưới cùng
-                rtb_Client.ScrollToCaret();
             }
         }
-        private void AppendAttach(string fileName, string fileContents)
+        private void AppendAttach(string fileName, string fileContens)
         {
             if (ls_Files.InvokeRequired)
             {
                 // Gọi lại phương thức AppendAttach trên luồng chính bằng cách sử dụng Invoke
-                Invoke(new Action<string, string>(AppendAttach), fileName, fileContents);
+                Invoke(new Action<string, string>(AppendAttach), fileName, fileContens);
             }
             else
             {
                 // Thêm mục vào ListBox
                 ls_Files.Items.Add(fileName);
-                //byte[] fileContents_byte = Encoding.UTF8.GetBytes(fileContens);
+                byte[] fileContents_byte = Encoding.UTF8.GetBytes(fileContens);
 
-                files[fileName] = fileContents;
+                files[fileName] = fileContents_byte;
             }
         }
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
@@ -261,10 +259,10 @@ namespace ChatGroup
             string selectedFileName = ls_Files.SelectedItem.ToString();
             if (files.ContainsKey(selectedFileName))
             {
-                string fileContent = files[selectedFileName];
+                string fileContent = Encoding.UTF8.GetString(files[selectedFileName]);
 
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.FileName = Path.ChangeExtension(selectedFileName, ".txt");
+                saveFileDialog.FileName = selectedFileName;
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -276,19 +274,6 @@ namespace ChatGroup
             else
             {
                 MessageBox.Show("Selected file not found in the file list.");
-            }
-        }
-
-        private void tb_Message_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                // Gửi tin nhắn
-                btn_Send.Click += btn_Send_Click;
-
-                // Ngăn chặn sự kiện Enter được xử lý tiếp (tránh xuống dòng mới trong TextBox)
-                e.Handled = true;
-                e.SuppressKeyPress = true;
             }
         }
     }

@@ -88,6 +88,7 @@
             // 
             // pictureBox1
             // 
+            pictureBox1.Image = Properties.Resources._1;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(250, 237);
@@ -135,7 +136,6 @@
             tb_Message.Name = "tb_Message";
             tb_Message.Size = new Size(684, 56);
             tb_Message.TabIndex = 33;
-            tb_Message.KeyDown += tb_Message_KeyDown;
             // 
             // tb_Name
             // 
