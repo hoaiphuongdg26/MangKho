@@ -1,10 +1,24 @@
+using System.Net.Sockets;
+
 namespace ChatGroup
 {
-    public partial class Form1 : Form
+    public partial class Dashboard : Form
     {
-        public Form1()
+        public Dashboard()
         {
             InitializeComponent();
+        }
+        private void TCPServer_Click(object sender, EventArgs e)
+        {
+            Server server = new Server();
+            TCPClient.Enabled = true;
+            server.Show();
+        }
+
+        private void TCPClient_Click(object sender, EventArgs e)
+        {
+            Client client = new Client();
+            client.Show();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ChatGroup
 {
-    partial class Form1
+    partial class Dashboard
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,12 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            TCPClient = new Button();
+            TCPServer = new Button();
+            SuspendLayout();
+            // 
+            // TCPClient
+            // 
+            TCPClient.Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TCPClient.Location = new Point(222, 32);
+            TCPClient.Name = "TCPClient";
+            TCPClient.Size = new Size(138, 50);
+            TCPClient.TabIndex = 5;
+            TCPClient.Text = "TCP Client";
+            TCPClient.UseVisualStyleBackColor = true;
+            TCPClient.Click += TCPClient_Click;
+            // 
+            // TCPServer
+            // 
+            TCPServer.Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            TCPServer.Location = new Point(37, 32);
+            TCPServer.Name = "TCPServer";
+            TCPServer.Size = new Size(141, 50);
+            TCPServer.TabIndex = 6;
+            TCPServer.Text = "TCP Server";
+            TCPServer.UseVisualStyleBackColor = true;
+            TCPServer.Click += TCPServer_Click;
+            // 
+            // Dashboard
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(403, 118);
+            Controls.Add(TCPClient);
+            Controls.Add(TCPServer);
+            Name = "Dashboard";
+            Text = "Form1";
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Button TCPClient;
+        private Button TCPServer;
     }
 }
