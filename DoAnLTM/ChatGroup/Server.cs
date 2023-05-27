@@ -30,6 +30,7 @@ namespace ChatGroup
         public Server()
         {
             InitializeComponent();
+            StopListen.Enabled = false;
         }
         private void Log(string message)
         {
@@ -126,8 +127,12 @@ namespace ChatGroup
                 byte[] buffer = new byte[1024];
 
                 //Nếu vẫn còn kết nối thì vẫn nhận tin nhắn
-                while (client.Connected)
+                while (client.Connected && client != null && stream != null)
                 {
+                    if (isServerRunning == false)
+                    {
+                        break;
+                    }
                     if (stream.DataAvailable)
                     {
                         //Đọc dữ liệu từ stream vào mảng byte
@@ -172,9 +177,11 @@ namespace ChatGroup
                 {
                     connectedClients.Remove(client);
                 }
-
-                Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
-                stream.Close();
+                if (client != null && client.Client != null)
+                {
+                    Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
+                    stream.Close();
+                }
             }
 
         }
@@ -208,6 +215,17 @@ namespace ChatGroup
             server.Stop();
             //Xoá danh sách các Clients đang kết nối
             connectedClients.Clear();
+            
+            
+            //test
+            // Ngắt kết nối với tất cả các client
+            foreach (TcpClient client in userNames.Keys)
+            {
+                //client.Close();
+                NetworkStream stream = client.GetStream();
+                stream.Close();
+                client.Close();
+            }
 
             Log("Server stopped\n");
         }
@@ -228,6 +246,11 @@ namespace ChatGroup
                     {
                         client.Close();
                     }
+                }
+                if (isServerRunning)
+                {
+                    MessageBox.Show("Vui lòng dừng lắng nghe trước khi đóng Server!");
+                    e.Cancel = true;
                 }
             }
             else

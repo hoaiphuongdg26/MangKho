@@ -22,6 +22,9 @@ namespace ChatGroup
         private string userName;
         private string attachmentFilePath = null;
         private ConcurrentDictionary<string, byte[]> files = new ConcurrentDictionary<string, byte[]>();
+        private bool isLogin;
+        private bool allIsDisposed;
+
         public Client()
         {
             InitializeComponent();
@@ -39,7 +42,7 @@ namespace ChatGroup
             {
                 string receivedData = ReadMessage(stream);
                 //string fileName = Path.GetFileName(attachmentFilePath);
-                if (receivedData.Contains("[FILE]"))
+                if (receivedData != null &&  receivedData.Contains("[FILE]"))
                 {
                     AppendMessage(receivedData);
                     string[] arr_message = receivedData.Split($"[FILE] - ");
@@ -103,6 +106,7 @@ namespace ChatGroup
             {
                 MessageBox.Show("Please enter a username.");
             }
+            isLogin = true;
         }
         private void btn_Send_Click(object sender, EventArgs e)
         {
@@ -130,16 +134,45 @@ namespace ChatGroup
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(message);
                 stream.Write(buffer, 0, buffer.Length);
+                stream.Flush();
             }
         }
+        /* private string ReadMessage(NetworkStream stream)
+         {
+             if (!stream.CanRead || !client.Connected)
+             {
+                 return null;
+             }
+             byte[] buffer = new byte[1024];
+             int bytesRead = stream.Read(buffer, 0, buffer.Length);
+             if (bytesRead > 0)
+             {
+                 return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+             }
+             else
+             {
+                 return null;
+             }
+         }*/
         private string ReadMessage(NetworkStream stream)
         {
             if (!stream.CanRead || !client.Connected)
             {
                 return null;
             }
+
             byte[] buffer = new byte[1024];
-            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+            int bytesRead = 0;
+            try
+            {
+                bytesRead = stream.Read(buffer, 0, buffer.Length);
+            }
+            catch (IOException)
+            {
+                // Xử lý ngoại lệ IOException khi kết nối bị đóng
+                return null;
+            }
+
             if (bytesRead > 0)
             {
                 return Encoding.UTF8.GetString(buffer, 0, bytesRead);
@@ -148,34 +181,37 @@ namespace ChatGroup
             {
                 return null;
             }
-
         }
+
         private void AppendMessage(string message)
         {
-            //check coi đúng luồng không, nếu ở luồng khác, sử dụng Invoke để gọi lại AppendMessage trên luồng chính
-            if (rtb_Client.InvokeRequired)
+            if (!allIsDisposed)
             {
-                rtb_Client.Invoke(new Action<string>(AppendMessage), message);
-            }
-            else
-            {
-                string[] messageParts = message.Split(':');
-                if (messageParts.Length == 2)
+                //check coi đúng luồng không, nếu ở luồng khác, sử dụng Invoke để gọi lại AppendMessage trên luồng chính
+                if (rtb_Client.InvokeRequired)
                 {
-                    Font boldFont = new Font(rtb_Client.Font, FontStyle.Bold);
-                    rtb_Client.SelectionFont = boldFont;
-                    rtb_Client.AppendText(messageParts[0]);
-
-                    Font ItalicFont = new Font(rtb_Client.Font, FontStyle.Italic);
-                    rtb_Client.SelectionFont = ItalicFont;
-                    rtb_Client.AppendText($": ({DateTime.Now})");
-
-                    rtb_Client.SelectionFont = rtb_Client.Font; // Đặt lại font gốc
-                    rtb_Client.AppendText(": " + messageParts[1] + "\n");
+                    rtb_Client.Invoke(new Action<string>(AppendMessage), message);
                 }
                 else
                 {
-                    rtb_Client.AppendText(message + "\n");
+                    string[] messageParts = message.Split(':');
+                    if (messageParts.Length == 2)
+                    {
+                        Font boldFont = new Font(rtb_Client.Font, FontStyle.Bold);
+                        rtb_Client.SelectionFont = boldFont;
+                        rtb_Client.AppendText(messageParts[0]);
+
+                        Font ItalicFont = new Font(rtb_Client.Font, FontStyle.Italic);
+                        rtb_Client.SelectionFont = ItalicFont;
+                        rtb_Client.AppendText($": ({DateTime.Now})");
+
+                        rtb_Client.SelectionFont = rtb_Client.Font; // Đặt lại font gốc
+                        rtb_Client.AppendText(": " + messageParts[1] + "\n");
+                    }
+                    else
+                    {
+                        rtb_Client.AppendText(message + "\n");
+                    }
                 }
             }
         }
@@ -197,7 +233,12 @@ namespace ChatGroup
         }
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Task.Run(() =>
+            if (isLogin)
+            {
+                MessageBox.Show("Vui lòng đăng xuất trước khi đóng form!");
+                e.Cancel = true;
+            }
+            else
             {
                 if (client != null && client.Connected)
                 {
@@ -207,9 +248,8 @@ namespace ChatGroup
                 {
                     stream.Close();
                 }
-                this.Close();
-            });
-
+            }
+            allIsDisposed = true;
         }
 
         private void btn_Attach_Click(object sender, EventArgs e)
@@ -283,19 +323,27 @@ namespace ChatGroup
         }
 
         private void btn_Logout_Click(object sender, EventArgs e)
-        {
-            
+        {  
+            isLogin = false;
             Task.Run(() =>
             {
                 SendMessage($"{tb_Name.Text} is disconected");
+                this.Invoke((Action)(() =>
+                {
+                    tb_Name.Enabled = true;
+                    tb_Name.ReadOnly = false;
+                    tb_Name.Clear();
+                    tb_Message.Enabled = false;
+                    btn_Attach.Enabled = false;
+                    btn_Send.Enabled = false;
+                    btn_Login.Enabled = true;
+                    btn_Logout.Enabled = false;
 
-                tb_Name.Enabled = true;
-                tb_Name.ReadOnly = false;
-                tb_Message.Enabled = false;
-                btn_Attach.Enabled = false;
-                btn_Send.Enabled = false;
-                btn_Login.Enabled = true;
-                btn_Logout.Enabled = false;
+                }));
+                if (stream != null && stream.CanRead)
+                {
+                    ReadMessage(stream);
+                }
                 if (client != null && client.Connected)
                 {
                     client.Close();
@@ -304,7 +352,6 @@ namespace ChatGroup
                 {
                     stream.Close();
                 }
-                this.Close();
             });
         }
 
