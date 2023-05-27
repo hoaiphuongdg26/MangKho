@@ -149,7 +149,6 @@
             tb_Message.Name = "tb_Message";
             tb_Message.Size = new Size(684, 43);
             tb_Message.TabIndex = 33;
-            tb_Message.TextChanged += tb_Message_TextChanged;
             // 
             // tb_Name
             // 

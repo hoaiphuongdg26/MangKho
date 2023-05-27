@@ -96,8 +96,6 @@ namespace ChatGroup
                     // Đưa ra thông báo không tìm thấy máy chủ trên RichTextBox
                     AppendMessage("SERVER NOT FOUND");
                     isConnectedToServer = false;
-                    receiveThread.Abort();
-                    client.Close();
                 }
             }
             else
@@ -277,16 +275,6 @@ namespace ChatGroup
             {
                 MessageBox.Show("Selected file not found in the file list.");
             }
-        }
-
-        private void tb_Message_TextChanged(object sender, EventArgs e)
-        {
-            btn_Send.Enabled = !string.IsNullOrEmpty(tb_Message.Text);
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }
