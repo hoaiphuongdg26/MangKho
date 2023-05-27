@@ -45,15 +45,11 @@ namespace ChatGroup
                 {
                     Font boldFont = new Font(rtb_Server.Font, FontStyle.Bold);
                     rtb_Server.SelectionFont = boldFont;
-<<<<<<< HEAD
-                    rtb_Server.AppendText(messageParts[0] + ": ");
-=======
                     rtb_Server.AppendText(messageParts[0]);
->>>>>>> parent of 28e78cf (bug dong ket noi)
 
                     Font ItalicFont = new Font(rtb_Server.Font, FontStyle.Italic);
                     rtb_Server.SelectionFont = ItalicFont;
-                    rtb_Server.AppendText($": ({DateTime.Now})");
+                    rtb_Server.AppendText($"({DateTime.Now})");
 
                     rtb_Server.SelectionFont = rtb_Server.Font; // Đặt lại font gốc
                     rtb_Server.AppendText(": " + messageParts[1] + "\n");
@@ -191,10 +187,6 @@ namespace ChatGroup
             foreach (TcpClient client in userNames.Keys)
             {
                 NetworkStream stream = client.GetStream();
-<<<<<<< HEAD
-                await stream.WriteAsync(buffer, 0, buffer.Length);
-
-=======
                 if (message.StartsWith("[FILE]")) // Kiểm tra nếu tin nhắn là tập tin
                 {
                     // Gửi tin nhắn đặc biệt chứa đường dẫn tới tập tin
@@ -204,7 +196,6 @@ namespace ChatGroup
                 {
                     await stream.WriteAsync(buffer, 0, buffer.Length);
                 }
->>>>>>> parent of 28e78cf (bug dong ket noi)
             }
         }
         private void StopListen_Click(object sender, EventArgs e)

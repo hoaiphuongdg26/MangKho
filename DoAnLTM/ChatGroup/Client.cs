@@ -85,7 +85,7 @@ namespace ChatGroup
 
                     // Vô hiệu hóa nút "Join" và cho phép gửi tin sau khi kết nối thành công
                     btn_Join.Enabled = false;
-                    //btn_Send.Enabled = true;
+                    btn_Send.Enabled = true;
                     tb_Message.Enabled = true;
                     btn_Attach.Enabled = true;
                     tb_Name.ReadOnly = true;
@@ -158,16 +158,16 @@ namespace ChatGroup
             }
             else
             {
-                string[] messageParts = message.Split(": ");
+                string[] messageParts = message.Split(':');
                 if (messageParts.Length == 2)
                 {
                     Font boldFont = new Font(rtb_Client.Font, FontStyle.Bold);
                     rtb_Client.SelectionFont = boldFont;
-                    rtb_Client.AppendText(messageParts[0] + ": ");
+                    rtb_Client.AppendText(messageParts[0]);
 
                     Font ItalicFont = new Font(rtb_Client.Font, FontStyle.Italic);
                     rtb_Client.SelectionFont = ItalicFont;
-                    rtb_Client.AppendText($"({DateTime.Now})");
+                    rtb_Client.AppendText($": ({DateTime.Now})");
 
                     rtb_Client.SelectionFont = rtb_Client.Font; // Đặt lại font gốc
                     rtb_Client.AppendText(": " + messageParts[1] + "\n");
@@ -232,7 +232,7 @@ namespace ChatGroup
                         // Lấy tên file từ đường dẫn
                         string fileName = Path.GetFileName(filePath);
                         // Gửi tên file tới server
-                        SendMessage($"[FILE] - {fileName}: ");
+                        SendMessage($"[FILE] - {fileName}:");
 
                         // Đọc và gửi dữ liệu tệp tin 
                         byte[] buffer = new byte[1024];
