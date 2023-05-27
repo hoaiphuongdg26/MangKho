@@ -49,7 +49,7 @@ namespace ChatGroup
 
                     Font ItalicFont = new Font(rtb_Server.Font, FontStyle.Italic);
                     rtb_Server.SelectionFont = ItalicFont;
-                    rtb_Server.AppendText($"({DateTime.Now})");
+                    rtb_Server.AppendText($": ({DateTime.Now})");
 
                     rtb_Server.SelectionFont = rtb_Server.Font; // Đặt lại font gốc
                     rtb_Server.AppendText(": " + messageParts[1] + "\n");
