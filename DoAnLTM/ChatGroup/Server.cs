@@ -33,6 +33,7 @@ namespace ChatGroup
         }
         private void Log(string message)
         {
+            if (rtb_Server.IsDisposed) return;
             if (rtb_Server.InvokeRequired)
             {
                 rtb_Server.Invoke(new Action<string>(Log), message);
@@ -40,16 +41,16 @@ namespace ChatGroup
             else
             {
                 //serverTextBox.AppendText(message);
-                string[] messageParts = message.Split(':');
+                string[] messageParts = message.Split(": ");
                 if (messageParts.Length == 2)
                 {
                     Font boldFont = new Font(rtb_Server.Font, FontStyle.Bold);
                     rtb_Server.SelectionFont = boldFont;
-                    rtb_Server.AppendText(messageParts[0]);
+                    rtb_Server.AppendText(messageParts[0]+": ");
 
                     Font ItalicFont = new Font(rtb_Server.Font, FontStyle.Italic);
                     rtb_Server.SelectionFont = ItalicFont;
-                    rtb_Server.AppendText($": ({DateTime.Now})");
+                    rtb_Server.AppendText($"({DateTime.Now})");
 
                     rtb_Server.SelectionFont = rtb_Server.Font; // Đặt lại font gốc
                     rtb_Server.AppendText(": " + messageParts[1] + "\n");
@@ -168,12 +169,14 @@ namespace ChatGroup
                     }
                 }
                 //Xoá Client khỏi ds
+
+                Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
                 lock (connectedClients)
                 {
                     connectedClients.Remove(client);
                 }
+                client.Close();
 
-                Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
                 stream.Close();
             }
             
@@ -187,15 +190,8 @@ namespace ChatGroup
             foreach (TcpClient client in userNames.Keys)
             {
                 NetworkStream stream = client.GetStream();
-                if (message.StartsWith("[FILE]")) // Kiểm tra nếu tin nhắn là tập tin
-                {
-                    // Gửi tin nhắn đặc biệt chứa đường dẫn tới tập tin
-                    await stream.WriteAsync(buffer, 0, buffer.Length);
-                }
-                else
-                {
-                    await stream.WriteAsync(buffer, 0, buffer.Length);
-                }
+                await stream.WriteAsync(buffer, 0, buffer.Length);
+                
             }
         }
         private void StopListen_Click(object sender, EventArgs e)
@@ -225,9 +221,12 @@ namespace ChatGroup
                 {
                     // Duyệt qua danh sách các client và ngắt kết nối với mỗi client
                     foreach (TcpClient client in connectedClients)
-                    {
+                    { 
                         client.Close();
+                        client.Dispose();
                     }
+                    connectedClients.Clear();
+                    server.Stop();
                 }
             }
             else
