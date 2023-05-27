@@ -284,10 +284,11 @@ namespace ChatGroup
 
         private void btn_Logout_Click(object sender, EventArgs e)
         {
-
+            
             Task.Run(() =>
             {
                 SendMessage($"{tb_Name.Text} is disconected");
+
                 tb_Name.Enabled = true;
                 tb_Name.ReadOnly = false;
                 tb_Message.Enabled = false;
