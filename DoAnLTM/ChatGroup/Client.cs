@@ -60,7 +60,7 @@ namespace ChatGroup
                 }
             }
         }
-        private void btn_Join_Click(object sender, EventArgs e)
+        private void btn_Login_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(tb_Name.Text))
             {
@@ -84,8 +84,9 @@ namespace ChatGroup
                     SendMessage($"{userName}");
 
                     // Vô hiệu hóa nút "Join" và cho phép gửi tin sau khi kết nối thành công
-                    btn_Join.Enabled = false;
-                    btn_Send.Enabled = true;
+                    btn_Login.Enabled = false;
+                    btn_Logout.Enabled = true;
+                    //btn_Send.Enabled = true;
                     tb_Message.Enabled = true;
                     btn_Attach.Enabled = true;
                     tb_Name.ReadOnly = true;
@@ -267,6 +268,10 @@ namespace ChatGroup
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string saveFilePath = saveFileDialog.FileName;
+                    if (!saveFilePath.ToLower().EndsWith(".txt"))
+                    {
+                        saveFilePath += ".txt";
+                    }
                     File.WriteAllText(saveFilePath, fileContent);
                     MessageBox.Show("File downloaded successfully!");
                 }
@@ -275,6 +280,36 @@ namespace ChatGroup
             {
                 MessageBox.Show("Selected file not found in the file list.");
             }
+        }
+
+        private void btn_Logout_Click(object sender, EventArgs e)
+        {
+
+            Task.Run(() =>
+            {
+                SendMessage($"{tb_Name.Text} is disconected");
+                tb_Name.Enabled = true;
+                tb_Name.ReadOnly = false;
+                tb_Message.Enabled = false;
+                btn_Attach.Enabled = false;
+                btn_Send.Enabled = false;
+                btn_Login.Enabled = true;
+                btn_Logout.Enabled = false;
+                if (client != null && client.Connected)
+                {
+                    client.Close();
+                }
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+                this.Close();
+            });
+        }
+
+        private void tb_Message_TextChanged(object sender, EventArgs e)
+        {
+            btn_Send.Enabled = !string.IsNullOrEmpty(tb_Name.Text);
         }
     }
 }
