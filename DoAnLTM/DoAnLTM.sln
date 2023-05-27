@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoAnLTM", "DoAnLTM\DoAnLTM.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoCaro", "CoCaro\CoCaro.csproj", "{BE33B07B-E772-400A-BD8D-04921A935D59}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EMAIL", "..\..\MAIL_PROGRAM\EMAIL\EMAIL.csproj", "{70341C99-DBAF-4857-9873-C0190B1BAC0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BE33B07B-E772-400A-BD8D-04921A935D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE33B07B-E772-400A-BD8D-04921A935D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE33B07B-E772-400A-BD8D-04921A935D59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70341C99-DBAF-4857-9873-C0190B1BAC0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70341C99-DBAF-4857-9873-C0190B1BAC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70341C99-DBAF-4857-9873-C0190B1BAC0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70341C99-DBAF-4857-9873-C0190B1BAC0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
