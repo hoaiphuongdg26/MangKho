@@ -30,6 +30,7 @@
         {
             txt_ServerLog = new TextBox();
             ptb_mouseCursor = new PictureBox();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)ptb_mouseCursor).BeginInit();
             SuspendLayout();
             // 
@@ -46,19 +47,29 @@
             // ptb_mouseCursor
             // 
             ptb_mouseCursor.BackColor = SystemColors.Highlight;
-            ptb_mouseCursor.Image = Properties.Resources.click_icon_isolated_on_white_260nw_1722492346__1_;
+            ptb_mouseCursor.Image = Properties.Resources.click_icon_isolated_on_white_260nw_1722492346__1_1;
             ptb_mouseCursor.Location = new Point(338, 257);
             ptb_mouseCursor.Name = "ptb_mouseCursor";
-            ptb_mouseCursor.Size = new Size(23, 24);
+            ptb_mouseCursor.Size = new Size(19, 22);
             ptb_mouseCursor.SizeMode = PictureBoxSizeMode.StretchImage;
             ptb_mouseCursor.TabIndex = 15;
             ptb_mouseCursor.TabStop = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(64, 45);
+            label1.Name = "label1";
+            label1.Size = new Size(50, 20);
+            label1.TabIndex = 16;
+            label1.Text = "label1";
             // 
             // Server
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
             Controls.Add(ptb_mouseCursor);
             Controls.Add(txt_ServerLog);
             Name = "Server";
@@ -66,7 +77,6 @@
             FormClosing += Server_FormClosing;
             Load += Server_Load;
             MouseEnter += Server_MouseEnter;
-            MouseLeave += Server_MouseLeave;
             ((System.ComponentModel.ISupportInitialize)ptb_mouseCursor).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -75,7 +85,7 @@
         #endregion
 
         private TextBox txt_ServerLog;
-        private Label lbl_MousePosition;
         private PictureBox ptb_mouseCursor;
+        private Label label1;
     }
 }

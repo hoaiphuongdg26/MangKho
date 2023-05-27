@@ -10,12 +10,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection.Emit;
 
 namespace DoAnLTM
 {
     public partial class Server : Form
     {
-        //private bool isMouseCursorVisible = false;
         private Point virtualMousePosition = Point.Empty;
         private const int MOUSEEVENTF_MOVE = 0x0001;
         private TcpListener listener;
@@ -26,9 +26,8 @@ namespace DoAnLTM
         private bool isListening = true;
 
 
-        //mới thêm 
+        //private bool isListening = true;
         private bool isConnected = false;
-
 
         [DllImport("user32.dll")]
         private static extern bool NativeSetCursorPos(int X, int Y);
@@ -46,28 +45,30 @@ namespace DoAnLTM
             listener = new TcpListener(IPAddress.Any, ServerPort);
             listener.Start();
             MessageBox.Show("Server started, listening for connections...", "Listen", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            DisplayMessage("Server started, listening for connections...");
 
             //Bắt đầu chấp nhận kết nối từ Client
             listener.BeginAcceptTcpClient(AcceptCallBack, null);
         }
         private void SetCursorPos(int x, int y)
         {
-            /* Invoke((Action)(() => virtualMousePosition = new Point(x, y)));
-             Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));*/
             Invoke((Action)(() =>
             {
                 virtualMousePosition = new Point(x, y);
                 ptb_mouseCursor.Location = virtualMousePosition;
-
-                // Cập nhật toạ độ chuột trên Label
-                //lbl_MousePosition.Text = $"X: {x}, Y: {y}";
             }));
         }
         private void DisplayMessage(string message)
         {
+            if (txt_ServerLog.IsDisposed)
+                return;
             if (txt_ServerLog.InvokeRequired)
             {
-                txt_ServerLog.Invoke(new Action<string>(DisplayMessage), new object[] { message });
+                Invoke((Action)(() =>
+                {
+                    txt_ServerLog.Text = "";
+                    txt_ServerLog.Text = message;
+                }));
             }
             else
             {
@@ -89,9 +90,8 @@ namespace DoAnLTM
                 // Cập nhật trạng thái kết nối
                 isConnected = true;
 
-                //MessageBox.Show("Connection accepted from 127.0.0.1:3000\n", "Connect", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DisplayMessage("Connection accepted from 127.0.0.1:3000\n");
                 //DisplayMessage("Conneted...");
+                DisplayMessage("Connection accepted from 127.0.0.1:3000\n");
 
                 client = listener.EndAcceptTcpClient(ar);
                 stream = client.GetStream();
@@ -108,6 +108,10 @@ namespace DoAnLTM
                     ptb_mouseCursor.Visible = true;
                 }));
             }
+            else
+            {
+                DisconnectClient();
+            }
         }
         private void ReadCallback(IAsyncResult ar)
         {
@@ -115,12 +119,17 @@ namespace DoAnLTM
             {
                 int bytesRead = stream.EndRead(ar);
                 if (bytesRead == 0)
+                {
+                    DisconnectClient();
                     return;
-
+                }
                 // Đọc tọa độ chuột từ client
-
                 int mouseX = BitConverter.ToInt32(buffer, 4);
                 int mouseY = BitConverter.ToInt32(buffer, 0);
+                Invoke((Action)(() =>
+                {
+                    label1.Text = $"X: {mouseX}, Y: {mouseY}";
+                }));
                 // Di chuyển chuột trên máy chủ
                 Invoke((Action)(() => SetCursorPos(mouseX, mouseY)));
 
@@ -134,6 +143,7 @@ namespace DoAnLTM
                     ptb_mouseCursor.Visible = false;
                 }));
                 DisconnectClient();
+                isListening = false;
             }
         }
         private void DisconnectClient()
@@ -142,6 +152,22 @@ namespace DoAnLTM
             stream.Close();
             client.Close();
             //listener.Stop();
+            try
+            {
+                Invoke((Action)(() =>
+                {
+                    ptb_mouseCursor.Visible = false;
+                }));
+                DisplayMessage("No connection. Listening for connections...");
+                // Đóng kết nối và dừng lắng nghe
+                stream.Close();
+                client.Close();
+                isConnected = false;
+            }
+            catch (Exception ex)
+            {
+                DisplayMessage(ex.ToString());
+            }
         }
         private void Server_Load(object sender, EventArgs e)
         {
@@ -153,15 +179,27 @@ namespace DoAnLTM
             //ptb_mouseCursor.Visible = true;
             Invoke((Action)(() => ptb_mouseCursor.Location = virtualMousePosition));
         }
-
-        private void Server_MouseLeave(object sender, EventArgs e)
-        {
-            //ptb_mouseCursor.Visible = false;
-        }
         private void Server_FormClosing(object sender, FormClosingEventArgs e)
         {
             listener.Stop();
             isListening = false;
+            if (isConnected)
+            {
+                MessageBox.Show("Please disconnect before exiting!", "UNABLE TO EXIT", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //K đóng form nữa
+                e.Cancel = true;
+            }
+            else
+            {
+                listener.Stop();
+                isListening = false;
+            }
+
+            // Enable lại nút Server trong form Dashboard
+            if (Application.OpenForms["Dashboard"] is Dashboard dashboardForm)
+            {
+                dashboardForm.buttonServer(true);
+            }
         }
     }
 }

@@ -40,15 +40,9 @@ namespace DoAnLTM
                 client = new TcpClient(serverIP, serverPort);
                 stream = client.GetStream();
 
-
-                //test mới thêm
                 // Chỉ thêm sự kiện di chuyển chuột nếu isConnected là false
                 if (!isConnected)
                     MouseMove += Client_MouseMove;
-
-
-                // Lắng nghe sự kiện di chuyển chuột
-                //MouseMove += Client_MouseMove;
 
                 // Hiển thị PictureBox
                 ptb_mouseCursor.Visible = true;
@@ -65,19 +59,16 @@ namespace DoAnLTM
         }
 
         private void bnt_Disconnect_Click(object sender, EventArgs e)
-        {         
-            // Đóng kết nối và xóa sự kiện di chuyển chuột
+        {
+            // Đóng kết nối 
             if (stream != null)
                 stream.Close();
             if (client != null)
                 client.Close();
-            //MouseMove -= Client_MouseMove;
 
-            //test mới thêm
             // Xóa sự kiện di chuyển chuột chỉ khi trạng thái kết nối là true
             if (isConnected)
                 MouseMove -= Client_MouseMove;
-
 
             // Cập nhật trạng thái kết nối
             isConnected = false;
@@ -98,8 +89,6 @@ namespace DoAnLTM
                     buffer = BitConverter.GetBytes(e.Y);
                     stream.Write(buffer, 0, buffer.Length);
                 }
-                // Cập nhật toạ độ chuột trên Label
-                //lbl_MousePosition.Text = $"X: {e.X}, Y: {e.Y}";
             }
             catch (Exception ex)
             {
@@ -110,6 +99,12 @@ namespace DoAnLTM
         private void Client_FormClosing(object sender, FormClosingEventArgs e)
         {
             bnt_Disconnect_Click(sender, e);
+
+            // Enable lại nút Client trong form Dashboard
+            if (Application.OpenForms["Dashboard"] is Dashboard dashboardForm)
+            {
+                dashboardForm.buttonClient(true);
+            }
         }
     }
 }

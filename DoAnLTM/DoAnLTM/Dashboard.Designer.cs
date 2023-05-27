@@ -34,30 +34,37 @@
             // 
             // bnt_Client
             // 
+            bnt_Client.BackColor = Color.Azure;
+            bnt_Client.FlatStyle = FlatStyle.Flat;
             bnt_Client.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            bnt_Client.ForeColor = Color.SteelBlue;
             bnt_Client.Location = new Point(239, 48);
             bnt_Client.Name = "bnt_Client";
             bnt_Client.Size = new Size(135, 46);
             bnt_Client.TabIndex = 3;
             bnt_Client.Text = "Client";
-            bnt_Client.UseVisualStyleBackColor = true;
+            bnt_Client.UseVisualStyleBackColor = false;
             bnt_Client.Click += bnt_Client_Click;
             // 
             // bnt_Server
             // 
+            bnt_Server.BackColor = Color.Azure;
+            bnt_Server.FlatStyle = FlatStyle.Flat;
             bnt_Server.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point);
+            bnt_Server.ForeColor = Color.SteelBlue;
             bnt_Server.Location = new Point(48, 48);
             bnt_Server.Name = "bnt_Server";
             bnt_Server.Size = new Size(135, 46);
             bnt_Server.TabIndex = 2;
             bnt_Server.Text = "Server";
-            bnt_Server.UseVisualStyleBackColor = true;
+            bnt_Server.UseVisualStyleBackColor = false;
             bnt_Server.Click += bnt_Server_Click;
             // 
             // Dashboard
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ButtonFace;
             ClientSize = new Size(436, 136);
             Controls.Add(bnt_Client);
             Controls.Add(bnt_Server);
