@@ -52,15 +52,17 @@
             // 
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label2.Location = new Point(896, 265);
             label2.Name = "label2";
-            label2.Size = new Size(44, 20);
+            label2.Size = new Size(46, 20);
             label2.TabIndex = 32;
             label2.Text = "Users";
             // 
             // listView1
             // 
             listView1.BackColor = Color.White;
+            listView1.BorderStyle = BorderStyle.None;
             listView1.Location = new Point(797, 290);
             listView1.Name = "listView1";
             listView1.Size = new Size(250, 115);
@@ -71,25 +73,28 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
-            label1.Location = new Point(896, 408);
+            label1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Location = new Point(896, 412);
             label1.Name = "label1";
-            label1.Size = new Size(38, 20);
+            label1.Size = new Size(39, 20);
             label1.TabIndex = 30;
             label1.Text = "Files";
             // 
             // ls_Files
             // 
             ls_Files.BackColor = Color.White;
+            ls_Files.BorderStyle = BorderStyle.None;
             ls_Files.FormattingEnabled = true;
             ls_Files.ItemHeight = 20;
             ls_Files.Location = new Point(797, 436);
             ls_Files.Name = "ls_Files";
-            ls_Files.Size = new Size(250, 184);
+            ls_Files.Size = new Size(250, 180);
             ls_Files.TabIndex = 29;
             // 
             // btn_Download
             // 
             btn_Download.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            btn_Download.Image = Properties.Resources.v960_ning_05;
             btn_Download.Location = new Point(870, 626);
             btn_Download.Name = "btn_Download";
             btn_Download.Size = new Size(102, 30);
@@ -100,18 +105,20 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = Properties.Resources._1;
-            pictureBox1.Location = new Point(797, 12);
+            pictureBox1.BackColor = Color.Transparent;
+            pictureBox1.Image = Properties.Resources.Logo;
+            pictureBox1.Location = new Point(821, 32);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(250, 237);
+            pictureBox1.Size = new Size(199, 199);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // btn_Join
             // 
+            btn_Join.BackgroundImage = Properties.Resources.v960_ning_05;
             btn_Join.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            btn_Join.Image = Properties.Resources._5528913;
+            btn_Join.ImageAlign = ContentAlignment.TopLeft;
             btn_Join.Location = new Point(324, 521);
             btn_Join.Name = "btn_Join";
             btn_Join.Size = new Size(86, 30);
@@ -132,6 +139,7 @@
             // 
             btn_Attach.Enabled = false;
             btn_Attach.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
+            btn_Attach.Image = Properties.Resources.v960_ning_05;
             btn_Attach.Location = new Point(9, 628);
             btn_Attach.Name = "btn_Attach";
             btn_Attach.Size = new Size(86, 30);
@@ -166,7 +174,7 @@
             rtb_Client.Location = new Point(12, 12);
             rtb_Client.Name = "rtb_Client";
             rtb_Client.ReadOnly = true;
-            rtb_Client.Size = new Size(776, 459);
+            rtb_Client.Size = new Size(776, 479);
             rtb_Client.TabIndex = 31;
             rtb_Client.Text = "";
             // 
@@ -194,9 +202,10 @@
             // 
             // btn_Send
             // 
+            btn_Send.BackgroundImage = Properties.Resources.v960_ning_05;
             btn_Send.Enabled = false;
             btn_Send.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            btn_Send.Location = new Point(693, 592);
+            btn_Send.Location = new Point(699, 589);
             btn_Send.Name = "btn_Send";
             btn_Send.Size = new Size(86, 30);
             btn_Send.TabIndex = 28;
@@ -207,7 +216,7 @@
             // button1
             // 
             button1.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Image = Properties.Resources._5528913;
+            button1.Image = Properties.Resources.v960_ning_05;
             button1.Location = new Point(416, 521);
             button1.Name = "button1";
             button1.Size = new Size(86, 30);
@@ -221,8 +230,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackgroundImage = Properties.Resources._5528913;
-            ClientSize = new Size(1057, 664);
+            BackgroundImageLayout = ImageLayout.Stretch;
+            ClientSize = new Size(1070, 664);
             Controls.Add(label2);
             Controls.Add(button1);
             Controls.Add(listView1);

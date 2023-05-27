@@ -36,6 +36,8 @@
             // 
             // rtb_Server
             // 
+            rtb_Server.BackColor = Color.White;
+            rtb_Server.BorderStyle = BorderStyle.None;
             rtb_Server.Location = new Point(12, 47);
             rtb_Server.Name = "rtb_Server";
             rtb_Server.ReadOnly = true;
@@ -67,6 +69,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.WhiteSmoke;
             ClientSize = new Size(800, 450);
             Controls.Add(rtb_Server);
             Controls.Add(Listen);
