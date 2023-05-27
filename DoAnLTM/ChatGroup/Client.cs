@@ -283,5 +283,10 @@ namespace ChatGroup
         {
             btn_Send.Enabled = !string.IsNullOrEmpty(tb_Message.Text);
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

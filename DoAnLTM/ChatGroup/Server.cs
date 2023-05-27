@@ -46,7 +46,7 @@ namespace ChatGroup
                 {
                     Font boldFont = new Font(rtb_Server.Font, FontStyle.Bold);
                     rtb_Server.SelectionFont = boldFont;
-                    rtb_Server.AppendText(messageParts[0]+": ");
+                    rtb_Server.AppendText(messageParts[0] + ": ");
 
                     Font ItalicFont = new Font(rtb_Server.Font, FontStyle.Italic);
                     rtb_Server.SelectionFont = ItalicFont;
@@ -179,7 +179,7 @@ namespace ChatGroup
 
                 stream.Close();
             }
-            
+
         }
         private async Task SendMessageToAllClients(TcpClient senderClient, string message)
         {
@@ -191,7 +191,7 @@ namespace ChatGroup
             {
                 NetworkStream stream = client.GetStream();
                 await stream.WriteAsync(buffer, 0, buffer.Length);
-                
+
             }
         }
         private void StopListen_Click(object sender, EventArgs e)
@@ -221,7 +221,7 @@ namespace ChatGroup
                 {
                     // Duyệt qua danh sách các client và ngắt kết nối với mỗi client
                     foreach (TcpClient client in connectedClients)
-                    { 
+                    {
                         client.Close();
                         client.Dispose();
                     }
@@ -235,6 +235,5 @@ namespace ChatGroup
                 e.Cancel = true;
             }
         }
-
     }
 }

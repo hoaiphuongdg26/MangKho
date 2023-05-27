@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashboard));
             TCPClient = new Button();
             TCPServer = new Button();
             SuspendLayout();
@@ -61,8 +62,9 @@
             ClientSize = new Size(403, 118);
             Controls.Add(TCPClient);
             Controls.Add(TCPServer);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Dashboard";
-            Text = "Form1";
+            Text = "Dashboard";
             ResumeLayout(false);
         }
 

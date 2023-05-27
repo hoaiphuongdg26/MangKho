@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Server));
             rtb_Server = new RichTextBox();
             Listen = new Button();
             StopListen = new Button();
@@ -70,6 +71,7 @@
             Controls.Add(rtb_Server);
             Controls.Add(Listen);
             Controls.Add(StopListen);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Server";
             Text = "Server";
             FormClosing += Server_FormClosing;
