@@ -5,10 +5,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ChatGroup
 {
@@ -65,12 +67,20 @@ namespace ChatGroup
         }
         private void btn_Login_Click(object sender, EventArgs e)
         {
+            //Kiểm tra địa chỉ IP
+            IPAddress ip;
+            string IPadd = tb_IPAdd.Text.Trim();
+            if (!IPAddress.TryParse(IPadd, out ip))
+            {
+                MessageBox.Show("Wrong IP address!");
+                return;
+            }
             if (!string.IsNullOrEmpty(tb_Name.Text))
             {
                 try
                 {
                     //Tạo kết nối tới server
-                    client = new TcpClient("127.0.0.1", 8080);
+                    client = new TcpClient(IPadd, 8080);
                     //dùng để ghi và đọc dữ liệu từ kết nối
                     stream = client.GetStream();
                     //Tạo luồng
