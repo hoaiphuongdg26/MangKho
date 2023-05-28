@@ -30,7 +30,6 @@ namespace ChatGroup
         public Server()
         {
             InitializeComponent();
-            StopListen.Enabled = false;
         }
         private void Log(string message)
         {
@@ -123,6 +122,7 @@ namespace ChatGroup
             //Tạo 1 stream để đọc và ghi tin nhắn gửi từ Client
             NetworkStream stream = client.GetStream();
 
+<<<<<<< HEAD
             //Mảng này để đọc dữ liệu từ stream đó
             byte[] buffer = new byte[1024];
 
@@ -147,6 +147,12 @@ namespace ChatGroup
                     string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
                     if (receivedData.Contains("[FILE]"))
+=======
+                //Nếu vẫn còn kết nối thì vẫn nhận tin nhắn
+                while (client.Connected)
+                {
+                    if (stream.DataAvailable)
+>>>>>>> parent of eb24951 (fix bug căng cực căng cực)
                     {
                         string[] arr_message = receivedData.Split($"[FILE] - ");
                         int colonIndex = arr_message[1].IndexOf(":");
@@ -177,11 +183,9 @@ namespace ChatGroup
                 {
                     connectedClients.Remove(client);
                 }
-                if (client != null && client.Client != null)
-                {
-                    Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
-                    stream.Close();
-                }
+
+                Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
+                stream.Close();
             }
 
         }
@@ -217,6 +221,7 @@ namespace ChatGroup
             server.Stop();
             //Xoá danh sách các Clients đang kết nối
             connectedClients.Clear();
+<<<<<<< HEAD
 
 
             //test
@@ -228,6 +233,8 @@ namespace ChatGroup
                 stream.Close();
                 client.Close();
             }
+=======
+>>>>>>> parent of eb24951 (fix bug căng cực căng cực)
 
             Log("Server stopped\n");
         }
@@ -248,11 +255,6 @@ namespace ChatGroup
                     {
                         client.Close();
                     }
-                }
-                if (isServerRunning)
-                {
-                    MessageBox.Show("Vui lòng dừng lắng nghe trước khi đóng Server!");
-                    e.Cancel = true;
                 }
             }
             else
