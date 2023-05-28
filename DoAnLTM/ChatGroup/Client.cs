@@ -135,6 +135,7 @@ namespace ChatGroup
                 byte[] buffer = Encoding.UTF8.GetBytes(message);
                 stream.Write(buffer, 0, buffer.Length);
                 stream.Flush();
+                //stream = null;
             }
         }
         /* private string ReadMessage(NetworkStream stream)
