@@ -223,13 +223,10 @@ namespace ChatGroup
             // Ngắt kết nối với tất cả các client
             foreach (TcpClient client in userNames.Keys)
             {
-                if (isServerRunning)
-                {
-                    //client.Close();
-                    NetworkStream stream = client.GetStream();
-                    stream.Close();
-                    client.Close();
-                }
+                //client.Close();
+                NetworkStream stream = client.GetStream();
+                stream.Close();
+                client.Close();
             }
 
             Log("Server stopped\n");
@@ -246,14 +243,10 @@ namespace ChatGroup
                 // Ngắt kết nối với tất cả các client
                 if (connectedClients.Count > 0)
                 {
-                    lock (connectedClients)
+                    // Duyệt qua danh sách các client và ngắt kết nối với mỗi client
+                    foreach (TcpClient client in connectedClients)
                     {
-                        List<TcpClient> clientsCopy = new List<TcpClient>(connectedClients);
-                        // Duyệt qua danh sách các client và ngắt kết nối với mỗi client
-                        foreach (TcpClient client in connectedClients)
-                        {
-                            client.Close();
-                        }
+                        client.Close();
                     }
                 }
                 if (isServerRunning)
@@ -266,10 +259,6 @@ namespace ChatGroup
             {
                 // Hủy đóng form
                 e.Cancel = true;
-            }
-            if (Application.OpenForms["Dashboard"] is Dashboard dashboardForm)
-            {
-                dashboardForm.btn_TCPServer(true);
             }
         }
     }
