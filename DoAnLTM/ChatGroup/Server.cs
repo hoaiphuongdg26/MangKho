@@ -69,7 +69,12 @@ namespace ChatGroup
             server.Start();
             isServerRunning = true;
 
-            Log($"Server started on 127.0.0.1:{port}\n");
+            //Lấy địa chỉ ip hiện tại của pc để làm máy chủ
+            string ipAddress = Dns.GetHostEntry(Dns.GetHostName())
+                     .AddressList
+                     .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                     ?.ToString();
+            Log($"Server started on {ipAddress}:{port}\n");
 
             //Tạo thread để chấp nhận kết nối từ các Client
             listenThread = new Thread(AcceptClients);
