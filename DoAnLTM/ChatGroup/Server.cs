@@ -30,6 +30,7 @@ namespace ChatGroup
         public Server()
         {
             InitializeComponent();
+            StopListen.Enabled = false;
         }
         private void Log(string message)
         {
@@ -122,7 +123,6 @@ namespace ChatGroup
             //Tạo 1 stream để đọc và ghi tin nhắn gửi từ Client
             NetworkStream stream = client.GetStream();
 
-<<<<<<< HEAD
             //Mảng này để đọc dữ liệu từ stream đó
             byte[] buffer = new byte[1024];
 
@@ -147,12 +147,6 @@ namespace ChatGroup
                     string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
                     if (receivedData.Contains("[FILE]"))
-=======
-                //Nếu vẫn còn kết nối thì vẫn nhận tin nhắn
-                while (client.Connected)
-                {
-                    if (stream.DataAvailable)
->>>>>>> parent of eb24951 (fix bug căng cực căng cực)
                     {
                         string[] arr_message = receivedData.Split($"[FILE] - ");
                         int colonIndex = arr_message[1].IndexOf(":");
@@ -183,9 +177,11 @@ namespace ChatGroup
                 {
                     connectedClients.Remove(client);
                 }
-
-                Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
-                stream.Close();
+                if (client != null && client.Client != null)
+                {
+                    Log($"Client disconnected: {client.Client.RemoteEndPoint}\n");
+                    stream.Close();
+                }
             }
 
         }
@@ -198,17 +194,17 @@ namespace ChatGroup
             foreach (TcpClient client in userNames.Keys)
             {
                 NetworkStream stream = client.GetStream();
-
-                if (message.StartsWith("[FILE]")) // Kiểm tra nếu tin nhắn là tập tin
-                {
-                    // Gửi tin nhắn đặc biệt chứa đường dẫn tới tập tin
-                    await stream.WriteAsync(buffer, 0, buffer.Length);
-                }
-                else
-                {
-                    await stream.WriteAsync(buffer, 0, buffer.Length);
-                }
-
+                
+                    if (message.StartsWith("[FILE]")) // Kiểm tra nếu tin nhắn là tập tin
+                    {
+                        // Gửi tin nhắn đặc biệt chứa đường dẫn tới tập tin
+                        await stream.WriteAsync(buffer, 0, buffer.Length);
+                    }
+                    else
+                    {
+                        await stream.WriteAsync(buffer, 0, buffer.Length);
+                    }
+                
             }
         }
         private void StopListen_Click(object sender, EventArgs e)
@@ -221,20 +217,20 @@ namespace ChatGroup
             server.Stop();
             //Xoá danh sách các Clients đang kết nối
             connectedClients.Clear();
-<<<<<<< HEAD
 
 
             //test
             // Ngắt kết nối với tất cả các client
             foreach (TcpClient client in userNames.Keys)
             {
-                //client.Close();
-                NetworkStream stream = client.GetStream();
-                stream.Close();
-                client.Close();
+                if (isServerRunning)
+                {
+                    //client.Close();
+                    NetworkStream stream = client.GetStream();
+                    stream.Close();
+                    client.Close();
+                }
             }
-=======
->>>>>>> parent of eb24951 (fix bug căng cực căng cực)
 
             Log("Server stopped\n");
         }
@@ -250,11 +246,20 @@ namespace ChatGroup
                 // Ngắt kết nối với tất cả các client
                 if (connectedClients.Count > 0)
                 {
-                    // Duyệt qua danh sách các client và ngắt kết nối với mỗi client
-                    foreach (TcpClient client in connectedClients)
+                    lock (connectedClients)
                     {
-                        client.Close();
+                        List<TcpClient> clientsCopy = new List<TcpClient>(connectedClients);
+                        // Duyệt qua danh sách các client và ngắt kết nối với mỗi client
+                        foreach (TcpClient client in connectedClients)
+                        {
+                            client.Close();
+                        }
                     }
+                }
+                if (isServerRunning)
+                {
+                    MessageBox.Show("Vui lòng dừng lắng nghe trước khi đóng Server!");
+                    e.Cancel = true;
                 }
             }
             else

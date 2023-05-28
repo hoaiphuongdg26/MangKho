@@ -130,11 +130,6 @@ namespace ChatGroup
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(message);
                 stream.Write(buffer, 0, buffer.Length);
-<<<<<<< HEAD
-                stream.Flush();
-                //stream = null;
-=======
->>>>>>> parent of eb24951 (fix bug căng cực căng cực)
             }
         }
         private string ReadMessage(NetworkStream stream)
