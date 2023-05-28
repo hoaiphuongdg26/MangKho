@@ -89,7 +89,7 @@ namespace DoAnLTM
                     buffer = BitConverter.GetBytes(e.Y);
                     stream.Write(buffer, 0, buffer.Length);
                 }
-                label3.Text = $"X: {e.X}, Y: {e.Y}";
+                //label3.Text = $"X: {e.X}, Y: {e.Y}";
             }
             catch (Exception ex)
             {

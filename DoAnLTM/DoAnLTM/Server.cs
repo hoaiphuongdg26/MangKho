@@ -35,13 +35,18 @@ namespace DoAnLTM
 
             ptb_mouseCursor.Visible = false;
 
+            string ipAddress = Dns.GetHostEntry(Dns.GetHostName())
+                     .AddressList
+                     .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                     ?.ToString();
+
             //Tạo IP Address và Port cho Server
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+            //IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             int ServerPort = 3000;
             //Khởi tạo lắng nghe kết nối từ Client
             listener = new TcpListener(IPAddress.Any, ServerPort);
             listener.Start();
-            DisplayMessage("Server started, listening for connections...");
+            DisplayMessage($"Server started on {ipAddress}, listening for connections...");
 
             //Bắt đầu chấp nhận kết nối từ Client
             listener.BeginAcceptTcpClient(AcceptCallBack, null);
@@ -85,7 +90,11 @@ namespace DoAnLTM
                 // Cập nhật trạng thái kết nối
                 isConnected = true;
 
-                DisplayMessage("Connection accepted from 127.0.0.1:3000\n");
+                string ipAddress = Dns.GetHostEntry(Dns.GetHostName())
+                     .AddressList
+                     .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                     ?.ToString();
+                DisplayMessage($"Connection accepted from {ipAddress}:3000\n");
 
                 client = listener.EndAcceptTcpClient(ar);
                 stream = client.GetStream();
@@ -120,10 +129,12 @@ namespace DoAnLTM
                 // Đọc tọa độ chuột từ client
                 int mouseX = BitConverter.ToInt32(buffer, 4);
                 int mouseY = BitConverter.ToInt32(buffer, 0);
-                Invoke((Action)(() =>
+
+                /*Invoke((Action)(() =>
                 {
                     label1.Text = $"X: {mouseX}, Y: {mouseY}";
-                }));
+                }));*/
+
                 // Di chuyển chuột trên máy chủ
                 Invoke((Action)(() => SetCursorPos(mouseX, mouseY)));
 

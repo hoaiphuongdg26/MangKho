@@ -35,14 +35,13 @@
             bnt_Disconnect = new Button();
             txt_ServerIP = new TextBox();
             ptb_mouseCursor = new PictureBox();
-            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)ptb_mouseCursor).BeginInit();
             SuspendLayout();
             // 
             // txt_Port
             // 
             txt_Port.BackColor = SystemColors.ButtonHighlight;
-            txt_Port.Location = new Point(567, 5);
+            txt_Port.Location = new Point(567, 6);
             txt_Port.Name = "txt_Port";
             txt_Port.Size = new Size(92, 27);
             txt_Port.TabIndex = 11;
@@ -51,8 +50,8 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.ForeColor = Color.SteelBlue;
-            label2.Location = new Point(516, 9);
+            label2.ForeColor = SystemColors.ActiveCaptionText;
+            label2.Location = new Point(516, 8);
             label2.Name = "label2";
             label2.Size = new Size(48, 23);
             label2.TabIndex = 10;
@@ -62,8 +61,8 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.ForeColor = Color.SteelBlue;
-            label1.Location = new Point(79, 9);
+            label1.ForeColor = SystemColors.ActiveCaptionText;
+            label1.Location = new Point(79, 8);
             label1.Name = "label1";
             label1.Size = new Size(99, 23);
             label1.TabIndex = 9;
@@ -71,11 +70,11 @@
             // 
             // bnt_Connect
             // 
-            bnt_Connect.BackColor = Color.Azure;
+            bnt_Connect.BackColor = SystemColors.ButtonHighlight;
             bnt_Connect.FlatStyle = FlatStyle.Flat;
             bnt_Connect.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-            bnt_Connect.ForeColor = Color.SteelBlue;
-            bnt_Connect.Location = new Point(249, 48);
+            bnt_Connect.ForeColor = SystemColors.ActiveCaptionText;
+            bnt_Connect.Location = new Point(239, 48);
             bnt_Connect.Name = "bnt_Connect";
             bnt_Connect.Size = new Size(113, 40);
             bnt_Connect.TabIndex = 8;
@@ -85,12 +84,12 @@
             // 
             // bnt_Disconnect
             // 
-            bnt_Disconnect.BackColor = Color.Azure;
+            bnt_Disconnect.BackColor = Color.White;
             bnt_Disconnect.Enabled = false;
             bnt_Disconnect.FlatStyle = FlatStyle.Flat;
             bnt_Disconnect.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point);
-            bnt_Disconnect.ForeColor = Color.SteelBlue;
-            bnt_Disconnect.Location = new Point(459, 48);
+            bnt_Disconnect.ForeColor = SystemColors.ActiveCaptionText;
+            bnt_Disconnect.Location = new Point(462, 48);
             bnt_Disconnect.Name = "bnt_Disconnect";
             bnt_Disconnect.Size = new Size(113, 40);
             bnt_Disconnect.TabIndex = 7;
@@ -101,7 +100,7 @@
             // txt_ServerIP
             // 
             txt_ServerIP.BackColor = SystemColors.ButtonHighlight;
-            txt_ServerIP.Location = new Point(179, 5);
+            txt_ServerIP.Location = new Point(179, 6);
             txt_ServerIP.Name = "txt_ServerIP";
             txt_ServerIP.Size = new Size(253, 27);
             txt_ServerIP.TabIndex = 6;
@@ -117,22 +116,12 @@
             ptb_mouseCursor.TabIndex = 12;
             ptb_mouseCursor.TabStop = false;
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(27, 87);
-            label3.Name = "label3";
-            label3.Size = new Size(50, 20);
-            label3.TabIndex = 13;
-            label3.Text = "label3";
-            // 
             // Client
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ButtonFace;
             ClientSize = new Size(800, 450);
-            Controls.Add(label3);
             Controls.Add(ptb_mouseCursor);
             Controls.Add(txt_Port);
             Controls.Add(label2);
@@ -158,6 +147,5 @@
         private Button bnt_Disconnect;
         private TextBox txt_ServerIP;
         private PictureBox ptb_mouseCursor;
-        private Label label3;
     }
 }
