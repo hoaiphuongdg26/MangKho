@@ -121,57 +121,57 @@ namespace ChatGroup
         private void ReceiveMessages(TcpClient client)
         {
             //Tạo 1 stream để đọc và ghi tin nhắn gửi từ Client
-            NetworkStream stream = client.GetStream();
-
-            //Mảng này để đọc dữ liệu từ stream đó
-            byte[] buffer = new byte[1024];
-
-            //Nếu vẫn còn kết nối thì vẫn nhận tin nhắn
-            while (client.Connected && client != null && stream != null)
+            using (NetworkStream stream = client.GetStream())
             {
-                if (isServerRunning == false)
+                //Mảng này để đọc dữ liệu từ stream đó
+                byte[] buffer = new byte[1024];
+
+                //Nếu vẫn còn kết nối thì vẫn nhận tin nhắn
+                while (client.Connected && client != null && stream != null)
                 {
-                    break;
-                }
-                if (stream.DataAvailable)
-                {
-                    //Đọc dữ liệu từ stream vào mảng byte
-                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
-                    if (bytesRead == 0)
+                    if (isServerRunning == false)
                     {
                         break;
                     }
-
-                    //Chuyển dữ liệu đọc thành chuỗi
-                    string userName = userNames[client];
-                    string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-
-                    if (receivedData.Contains("[FILE]"))
+                    if (stream.DataAvailable)
                     {
-                        string[] arr_message = receivedData.Split($"[FILE] - ");
-                        int colonIndex = arr_message[1].IndexOf(":");
-                        string fileName = arr_message[1].Substring(0, colonIndex + 1);
-                        //byte[] fileContent = buffer.Skip(Encoding.UTF8.GetBytes(arr_message[0]).Length).ToArray();
-                        string fileContent = arr_message[1].Substring(colonIndex + 1);
-                        files[fileName] = fileContent;
+                        //Đọc dữ liệu từ stream vào mảng byte
+                        int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                        if (bytesRead == 0)
+                        {
+                            break;
+                        }
 
-                        //Với tb_Messgae
-                        /*Log($"{arr_message[0]}");
-                        SendMessageToAllClients(client, $"{arr_message[0]}");*/
+                        //Chuyển dữ liệu đọc thành chuỗi
+                        string userName = userNames[client];
+                        string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-                        //Với fileAttach
-                        Log(receivedData);
-                        SendMessageToAllClients(client, receivedData);
-                    }
-                    else
-                    {
-                        //In ra màn hình
-                        Log($"{receivedData}");
-                        //Gửi tới các client khác nữa
-                        SendMessageToAllClients(client, $"{receivedData}");
+                        if (receivedData.Contains("[FILE]"))
+                        {
+                            string[] arr_message = receivedData.Split($"[FILE] - ");
+                            int colonIndex = arr_message[1].IndexOf(":");
+                            string fileName = arr_message[1].Substring(0, colonIndex + 1);
+                            //byte[] fileContent = buffer.Skip(Encoding.UTF8.GetBytes(arr_message[0]).Length).ToArray();
+                            string fileContent = arr_message[1].Substring(colonIndex + 1);
+                            files[fileName] = fileContent;
+
+                            //Với tb_Messgae
+                            /*Log($"{arr_message[0]}");
+                            SendMessageToAllClients(client, $"{arr_message[0]}");*/
+
+                            //Với fileAttach
+                            Log(receivedData);
+                            SendMessageToAllClients(client, receivedData);
+                        }
+                        else
+                        {
+                            //In ra màn hình
+                            Log($"{receivedData}");
+                            //Gửi tới các client khác nữa
+                            SendMessageToAllClients(client, $"{receivedData}");
+                        }
                     }
                 }
-
                 //Xoá Client khỏi ds
                 lock (connectedClients)
                 {
@@ -194,17 +194,15 @@ namespace ChatGroup
             foreach (TcpClient client in userNames.Keys)
             {
                 NetworkStream stream = client.GetStream();
-                
-                    if (message.StartsWith("[FILE]")) // Kiểm tra nếu tin nhắn là tập tin
-                    {
-                        // Gửi tin nhắn đặc biệt chứa đường dẫn tới tập tin
-                        await stream.WriteAsync(buffer, 0, buffer.Length);
-                    }
-                    else
-                    {
-                        await stream.WriteAsync(buffer, 0, buffer.Length);
-                    }
-                
+                if (message.StartsWith("[FILE]")) // Kiểm tra nếu tin nhắn là tập tin
+                {
+                    // Gửi tin nhắn đặc biệt chứa đường dẫn tới tập tin
+                    await stream.WriteAsync(buffer, 0, buffer.Length);
+                }
+                else
+                {
+                    await stream.WriteAsync(buffer, 0, buffer.Length);
+                }
             }
         }
         private void StopListen_Click(object sender, EventArgs e)
@@ -266,6 +264,10 @@ namespace ChatGroup
             {
                 // Hủy đóng form
                 e.Cancel = true;
+            }
+            if (Application.OpenForms["Dashboard"] is Dashboard dashboardForm)
+            {
+                dashboardForm.btn_TCPServer(true);
             }
         }
     }
