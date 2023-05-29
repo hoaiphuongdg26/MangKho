@@ -34,19 +34,16 @@ namespace DoAnLTM
             InitializeComponent();
 
             ptb_mouseCursor.Visible = false;
-
+            //Khởi tạo IP Address và Port cho Server
             string ipAddress = Dns.GetHostEntry(Dns.GetHostName())
                      .AddressList
                      .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                      ?.ToString();
-
-            //Tạo IP Address và Port cho Server
-            //IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
             int ServerPort = 3000;
             //Khởi tạo lắng nghe kết nối từ Client
             listener = new TcpListener(IPAddress.Any, ServerPort);
             listener.Start();
-            DisplayMessage($"Server started on {ipAddress}, listening for connections...");
+            DisplayMessage($"Server started on {ipAddress}:{ServerPort}, listening for connections...");
 
             //Bắt đầu chấp nhận kết nối từ Client
             listener.BeginAcceptTcpClient(AcceptCallBack, null);
@@ -107,7 +104,7 @@ namespace DoAnLTM
                 // Cập nhật vị trí ban đầu của con chuột
                 Invoke((Action)(() =>
                 {
-                    ptb_mouseCursor.Location = Cursor.Position;
+                    ptb_mouseCursor.Location = System.Windows.Forms.Cursor.Position;
                     ptb_mouseCursor.Visible = true;
                 }));
             }
